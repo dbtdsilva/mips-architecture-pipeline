@@ -1,0 +1,10 @@
+MIPS_SystemC
+moc_MIPSarch.cpp
+moc_MIPSctrl.cpp
+moc_MIPSdmemview.cpp
+moc_MIPSimemview.cpp
+moc_MIPSmemview.cpp
+moc_MIPSmods.cpp
+moc_MIPSregfileview.cpp
+moc_modview.cpp
+*.o
