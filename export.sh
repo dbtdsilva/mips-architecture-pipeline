@@ -1,1 +1,5 @@
-export SYSTEMC=systemc_2_2_install/
+#!/bin/bash
+cd systemc*
+result="${PWD}/"
+export SYSTEMC=$result
+cd ..
