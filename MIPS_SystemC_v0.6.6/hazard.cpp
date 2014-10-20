@@ -15,10 +15,18 @@ void hazard::detect_hazard()
 		enable_pc.write(false);
 		enable_ifid.write(false);
 		reset_idexe.write(true);
-	}
-	else {
-	        enable_pc.write(true);
+		reset_ifid.write(false);
+	} else if(BranchTaken.read()) {
+		enable_pc.write(true);
 		enable_ifid.write(true);
 		reset_idexe.write(false);
+		reset_ifid.write(true);
+	}
+	else {
+	    enable_pc.write(true);
+		enable_ifid.write(true);
+		reset_idexe.write(false);
+		reset_ifid.write(false);
 	}
 }
+

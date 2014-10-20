@@ -17,6 +17,7 @@
 #include "dmem.h"
 #include "control.h"
 #include "hazard.h"
+#include "comparator.h"
 
 #include "mux.h"
 #include "reg.h"
@@ -61,9 +62,11 @@ SC_MODULE(mips) {
    decode            *dec1;      // decodes instruction
    regfile           *rfile;     // register file
    control           *ctrl;      // control
+   comparator        *comp;
    mux< sc_uint<5> >  *mr;       // selects destination register
    ext *e1;                      // sign extends imm to 32 bits
    orgate *or_reset_idexe;
+   orgate *or_reset_ifid;
    hazard *hazard_unit;
 
    //EXE
@@ -100,6 +103,8 @@ SC_MODULE(mips) {
    sc_signal < sc_uint<32> > inst_id,  // current instruction ID phase
                              PC4_id;
    // instruction fields
+   sc_signal <bool> equal;
+   sc_signal < sc_uint<32> > addr_ext; // imm_ext shift left 2
    sc_signal < sc_uint<5> > rs, rt, rd;
    sc_signal < sc_uint<16> > imm;
    sc_signal < sc_uint<6> > opcode;
@@ -118,7 +123,7 @@ SC_MODULE(mips) {
                              regb_exe, // value of regiter rt EXE phase
                              regb_mem; // value of regiter rt MEM phase
 
-   sc_signal <bool> reset_haz_idexe, reset_idexe;
+   sc_signal <bool> reset_haz_idexe, reset_idexe, reset_haz_ifid, reset_ifid;
    // control signals
    sc_signal <bool> MemRead, MemWrite, MemtoReg;
    sc_signal <bool> RegWrite, RegDst;
@@ -133,8 +138,7 @@ SC_MODULE(mips) {
 
    //EXE
    sc_signal < bool > Zero;            // ALU output is zero
-   sc_signal < sc_uint<32> > imm_exe, PC4_exe;
-   sc_signal < sc_uint<32> > addr_ext; // imm_ext shift left 2
+   sc_signal < sc_uint<32> > imm_exe; //PC4_exe;
    sc_signal < sc_uint<5> > WriteReg_exe;
    // ALU signals
    sc_signal < sc_uint<32> > ALUIn2,   // ALU second operand
@@ -143,7 +147,7 @@ SC_MODULE(mips) {
    sc_signal <bool> RegWrite_exe;
    sc_signal <bool> ALUSrc_exe;
    sc_signal < sc_uint<3> > ALUOp_exe;
-   sc_signal <bool> Branch_exe;
+   //sc_signal <bool> Branch_exe;
 
    // the following two signals are not used by the architecture
    // they are used only for visualization purposes
@@ -152,11 +156,11 @@ SC_MODULE(mips) {
 
    //MEM
    sc_signal < sc_uint<32> > MemOut;   // data memory output
-   sc_signal < sc_uint<32> > ALUOut_mem, BranchTarget_mem;
+   sc_signal < sc_uint<32> > ALUOut_mem;// BranchTarget_mem;
    sc_signal < sc_uint<5> > WriteReg_mem;
    sc_signal <bool> MemRead_mem, MemWrite_mem, MemtoReg_mem;
    sc_signal <bool> RegWrite_mem;
-   sc_signal <bool> Branch_mem, Zero_mem;
+   //sc_signal <bool> Branch_mem, Zero_mem;
 
    // the following two signals are not used by the architecture
    // they are used only for visualization purposes
