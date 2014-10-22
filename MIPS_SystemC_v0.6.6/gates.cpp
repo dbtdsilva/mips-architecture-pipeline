@@ -16,3 +16,8 @@ void orgate::entry()
 {
    dout.write(din1.read() || din2.read());
 }
+
+void xorgate::entry()
+{
+	dout.write(din1.read() ^ din2.read());
+}

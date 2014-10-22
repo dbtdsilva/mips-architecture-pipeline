@@ -57,4 +57,20 @@ SC_MODULE(orgate) {
   void entry();
 };
 
+
+SC_MODULE(xorgate) {
+
+  sc_in< bool >  din1;
+  sc_in< bool >  din2;
+  sc_out< bool > dout;
+
+  SC_CTOR(xorgate)
+     {
+      SC_METHOD(entry);
+      sensitive << din1 << din2;
+    }
+
+  void entry();
+};
+
 #endif

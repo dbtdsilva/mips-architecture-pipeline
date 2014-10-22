@@ -109,6 +109,7 @@ void mips::buildID(void)
       ctrl->ALUOp(ALUOp);
       ctrl->ALUSrc(ALUSrc);
       ctrl->RegWrite(RegWrite);
+      ctrl->BranchNotEqual(BranchNotEqual);
 
       comp = new comparator("comp");
 
@@ -116,11 +117,17 @@ void mips::buildID(void)
       comp->din2(regdata2);
       comp->equal(equal);
 
+      xor1 = new xorgate("xor1");
+
+      xor1->din1(equal);
+      xor1->din2(BranchNotEqual);
+      xor1->dout(BranchResult);
+
       // asdasdasd AND GATE BRANCH
       a1 = new andgate("a1");
 
       a1->din1(Branch);
-      a1->din2(equal);
+      a1->din2(BranchResult);
       a1->dout(BranchTaken);
 }
 
@@ -350,6 +357,7 @@ mips::~mips(void)
       delete addbr;
       delete a1;
       delete mPC;
+      delete xor1;
       delete dec1;
       delete mr;
       delete rfile;

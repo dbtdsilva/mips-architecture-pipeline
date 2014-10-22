@@ -65,6 +65,7 @@ SC_MODULE(mips) {
    comparator        *comp;
    mux< sc_uint<5> >  *mr;       // selects destination register
    ext *e1;                      // sign extends imm to 32 bits
+   xorgate *xor1;
    orgate *or_reset_idexe;
    orgate *or_reset_ifid;
    hazard *hazard_unit;
@@ -103,7 +104,7 @@ SC_MODULE(mips) {
    sc_signal < sc_uint<32> > inst_id,  // current instruction ID phase
                              PC4_id;
    // instruction fields
-   sc_signal <bool> equal;
+   sc_signal <bool> equal, BranchResult, BranchNotEqual;
    sc_signal < sc_uint<32> > addr_ext; // imm_ext shift left 2
    sc_signal < sc_uint<5> > rs, rt, rd;
    sc_signal < sc_uint<16> > imm;

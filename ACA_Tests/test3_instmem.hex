@@ -6,5 +6,5 @@
 0            #         nop
 0x00431020   #         add r2,r2,r3
 0            #         nop
-0x1041fff8   #         beq r2,r1,lab1
+0x1441fff8   #         beq r2,r1,lab1
 0x8c02000c   #         lw  r2,c(r0)

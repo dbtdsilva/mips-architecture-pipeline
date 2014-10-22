@@ -38,7 +38,7 @@ SC_MODULE(control) {
   sc_out< bool >  MemWrite;
   sc_out< bool >  ALUSrc;
   sc_out< bool >  RegWrite;
-
+  sc_out< bool >  BranchNotEqual;
   SC_CTOR(control)
      {
       SC_METHOD(entry);
