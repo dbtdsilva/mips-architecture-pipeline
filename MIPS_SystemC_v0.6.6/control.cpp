@@ -8,7 +8,9 @@ void control::entry()
 {
   switch(opcode.read()) {
     case 0: // R-format
-	BranchNotEqual.write(1);
+	Jump.write(0);
+		JumpOnRegister.write(0);
+		BranchNotEqual.write(1);
 	RegDst.write(1);
         ALUSrc.write(0);
 	    MemtoReg.write(0);
@@ -16,20 +18,71 @@ void control::entry()
 	    MemRead.write(0);
 	    MemWrite.write(0);
 	    Branch.write(0);
+
 	    switch(funct.read()) {
-	       case 32: ALUOp.write(2);
+		case  8: // jr
+					Jump.write(1);
+					JumpOnRegister.write(1);
+					RegWrite.write(0);
+					ALUOp.write(6);
+					break;
+		    case  9: // jalr
+					Jump.write(1);
+					JumpOnRegister.write(1);
+				    ALUOp.write(6);
+					break;
+		case 32: ALUOp.write(2);
 	                break;
-	       case 34: ALUOp.write(6);
+		case 34: ALUOp.write(6);
 	                break;
-	       case 36: ALUOp.write(0);
+		case 36: ALUOp.write(0);
 	                break;
-	       case 37: ALUOp.write(1);
+		case 37: ALUOp.write(1);
 	                break;
-	       case 42: ALUOp.write(7);
+		case 42: ALUOp.write(7);
 	                break;
 		}
 	    break;
-	case  5: // bne
+	case  2: // j
+		Jump.write(1);
+		JumpOnRegister.write(0);
+		RegWrite.write(0);
+
+		BranchNotEqual.write(0);
+		ALUSrc.write(0);
+	    MemRead.write(0);
+	    MemWrite.write(0);
+	    Branch.write(0);
+	    ALUOp.write(6);
+		break;
+	case  3: // jal
+		Jump.write(1);
+		JumpOnRegister.write(0);
+		RegWrite.write(1);
+
+		BranchNotEqual.write(0);
+		ALUSrc.write(0);
+	    MemRead.write(0);
+	    MemWrite.write(0);
+	    Branch.write(0);
+	    ALUOp.write(6);
+	    break;
+	case  4: // beq
+	Jump.write(0);
+		JumpOnRegister.write(0);
+
+		BranchNotEqual.write(0);
+        ALUSrc.write(0);
+	    RegWrite.write(0);
+	    MemRead.write(0);
+	    MemWrite.write(0);
+	    Branch.write(1);
+	    ALUOp.write(6);
+	    break;
+    case  5: // bne
+		Jump.write(0);
+		JumpOnRegister.write(0);
+
 		BranchNotEqual.write(1);
         ALUSrc.write(0);
 	    RegWrite.write(0);
@@ -38,17 +91,12 @@ void control::entry()
 	    Branch.write(1);
 	    ALUOp.write(6);
 	    break;
-    case  4: // beq
-	BranchNotEqual.write(0);
-        ALUSrc.write(0);
-	    RegWrite.write(0);
-	    MemRead.write(0);
-	    MemWrite.write(0);
-	    Branch.write(1);
-	    ALUOp.write(6);
-	    break;
     case 35: // lw
-	BranchNotEqual.write(1);
+	Jump.write(0);
+		JumpOnRegister.write(0);
+
+		BranchNotEqual.write(1);
+
         RegDst.write(0);
         ALUSrc.write(1);
 	    MemtoReg.write(1);
@@ -59,7 +107,11 @@ void control::entry()
 	    ALUOp.write(2);
 	    break;
     case 43: // sw
-        BranchNotEqual.write(1);
+        Jump.write(0);
+		JumpOnRegister.write(0);
+
+		BranchNotEqual.write(1);
+
         ALUSrc.write(1);
 	    RegWrite.write(0);
 	    MemRead.write(0);

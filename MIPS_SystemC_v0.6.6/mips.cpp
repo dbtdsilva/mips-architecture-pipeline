@@ -33,11 +33,13 @@ void mips::buildIF(void)
       add4->res(PC4);
 
       // Selects Next Program Counter Value
-      mPC = new mux< sc_uint<32> >("mPC");
-
-      mPC->sel(BranchTaken);
+      mPC = new mux4< sc_uint<32> >("mPC");
+      mPC->sel0(BranchTaken);
+      mPC->sel1(Jump);
       mPC->din0(PC4);
       mPC->din1(BranchTarget);
+      mPC->din2(JumpAddr);
+      mPC->din3(JumpAddr);
       mPC->dout(NPC);
 }
 
@@ -57,22 +59,13 @@ void mips::buildID(void)
       dec1->shamt(shamt);
       dec1->funct(funct);
 
-      // Selects Register to Write
-      mr = new mux< sc_uint<5> >("muxRDst");
-
-      mr->sel(RegDst);
-      mr->din0(rt);
-      mr->din1(rd);
-      mr->dout(WriteReg);
-
       // Register File
       rfile = new regfile("regfile");
-
       rfile->reg1(rs);
       rfile->reg2(rt);
       rfile->regwrite(WriteReg_wb);
-      rfile->data1(regdata1);
-      rfile->data2(regdata2);
+      rfile->data1(regdata1_mux);
+      rfile->data2(regdata2_mux);
 
       rfile->wr(RegWrite_wb);
       rfile->datawr(WriteVal);
@@ -85,20 +78,18 @@ void mips::buildID(void)
       e1->din(imm);
       e1->dout(imm_ext);
 
-      // shift left 2 imm_ext  asdadsasdasdas
+      // shift left 2 imm_ext
       sl2 = new shiftl2("sl2");
       sl2->din(imm_ext);
       sl2->dout(addr_ext);
 
-      // Adds Branch Immediate to Program Counter + 4 asdasdasdasd
+      // Adds Branch Immediate to Program Counter + 4
       addbr = new add("addbr");
-
       addbr->op1(PC4_id);
       addbr->op2(addr_ext);
       addbr->res(BranchTarget);
       // Control
       ctrl = new control("control");
-
       ctrl->opcode(opcode);
       ctrl->funct(funct);
       ctrl->RegDst(RegDst);
@@ -110,15 +101,47 @@ void mips::buildID(void)
       ctrl->ALUSrc(ALUSrc);
       ctrl->RegWrite(RegWrite);
       ctrl->BranchNotEqual(BranchNotEqual);
+      ctrl->Jump(Jump);
+      ctrl->JumpOnRegister(JumpOnRegister);
+
+      mrs = new mux< sc_uint<32> >("muxRs");
+      mrs->sel(Jump);
+      mrs->din0(regdata1_mux);
+      mrs->din1(PC4_id);
+      mrs->dout(regdata1);
+
+      mrt = new mux< sc_uint<32> >("muxRt");
+      mrt->sel(Jump);
+      mrt->din0(regdata2_mux);
+      const0 = 0;
+      mrt->din1(const0);
+      mrt->dout(regdata2);
+
+      // Selects Register to Write
+      mr = new mux4< sc_uint<5> >("muxRDst");
+      // Jump | RegDst
+      mr->sel1(Jump);
+      mr->sel0(RegDst);
+      mr->din0(rt);
+      mr->din1(rd);
+      const31 = 31;
+      mr->din2(const31);
+      mr->din3(const31);
+      mr->dout(WriteReg);
+
+      jAddrDecode = new jaddrdecode("jAddrDecode");
+      jAddrDecode->inst(inst_id);
+      jAddrDecode->PC_id(PC_id);
+      jAddrDecode->JumpOnRegister(JumpOnRegister);
+      jAddrDecode->data1(regdata1_mux);
+      jAddrDecode->out(JumpAddr);
 
       comp = new comparator("comp");
-
       comp->din1(regdata1);
       comp->din2(regdata2);
       comp->equal(equal);
 
       xor1 = new xorgate("xor1");
-
       xor1->din1(equal);
       xor1->din2(BranchNotEqual);
       xor1->dout(BranchResult);
@@ -339,6 +362,7 @@ void mips::buildArchitecture(void){
       hazard_unit->rs(rs);
       hazard_unit->rt(rt);
       hazard_unit->BranchTaken(BranchTaken);
+      hazard_unit->Jump(Jump);
       hazard_unit->WriteReg_exe(WriteReg_exe);
       hazard_unit->RegWrite_exe(RegWrite_exe);
       hazard_unit->WriteReg_mem(WriteReg_mem);
@@ -363,13 +387,14 @@ mips::~mips(void)
       delete rfile;
       delete e1;
       delete sl2;
+      delete mrt;
+      delete mrs;
       delete comp;
       delete m1;
       delete alu1;
       delete datamem;
       delete m2;
       delete ctrl;
-
       delete hazard_unit;
       delete or_reset_idexe;
       delete or_reset_ifid;

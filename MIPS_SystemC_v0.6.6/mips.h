@@ -20,9 +20,11 @@
 #include "comparator.h"
 
 #include "mux.h"
+#include "mux4.h"
 #include "reg.h"
 #include "ext.h"
 #include "shiftl2.h"
+#include "jaddrdecode.h"
 #include "add.h"
 #include "gates.h"
 
@@ -56,20 +58,21 @@ SC_MODULE(mips) {
    registo           *PCreg;     // PC register
    imem              *instmem;   // instruction memory
    add *add4;                    // adds 4 to PC
-   mux< sc_uint<32> > *mPC;      // selects Next PC from PCbrach and PC + 4
+   mux4< sc_uint<32> > *mPC;      // selects Next PC from PCbrach and PC + 4
 
    //ID
    decode            *dec1;      // decodes instruction
    regfile           *rfile;     // register file
    control           *ctrl;      // control
    comparator        *comp;
-   mux< sc_uint<5> >  *mr;       // selects destination register
+   mux4< sc_uint<5> >  *mr;       // selects destination register
+   mux< sc_uint<32> > *mrs, *mrt;
    ext *e1;                      // sign extends imm to 32 bits
    xorgate *xor1;
    orgate *or_reset_idexe;
    orgate *or_reset_ifid;
    hazard *hazard_unit;
-
+   jaddrdecode *jAddrDecode;
    //EXE
    alu               *alu1;      // ALU
    mux< sc_uint<32> > *m1;       // selects 2nd ALU operand
@@ -103,19 +106,24 @@ SC_MODULE(mips) {
    //ID
    sc_signal < sc_uint<32> > inst_id,  // current instruction ID phase
                              PC4_id;
+   sc_signal < sc_uint<32> > const0;
+   sc_signal < sc_uint<5> > const31;
    // instruction fields
    sc_signal <bool> equal, BranchResult, BranchNotEqual;
+   sc_signal <bool> Jump, JumpOnRegister;
    sc_signal < sc_uint<32> > addr_ext; // imm_ext shift left 2
    sc_signal < sc_uint<5> > rs, rt, rd;
    sc_signal < sc_uint<16> > imm;
    sc_signal < sc_uint<6> > opcode;
    sc_signal < sc_uint<5> > shamt;
    sc_signal < sc_uint<6> > funct;
+   sc_signal < sc_uint<32> > JumpAddr;
+
    // register file signals
    sc_signal < sc_uint<5> > WriteReg;  // register to write
 
-   sc_signal < sc_uint<32> > regdata1, // value of register rs
-                             regdata2, // value of regiter rt
+   sc_signal < sc_uint<32> > regdata1, regdata1_mux, // value of register rs
+                             regdata2, regdata2_mux, // value of regiter rt
 			     WriteVal; // value to write in register WriteReg
 
    sc_signal < sc_uint<32> > imm_ext;  // imm sign extended

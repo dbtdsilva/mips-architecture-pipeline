@@ -78,6 +78,29 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
     pcStage.push_back(new PortValRead(mips1.reg_mem_wb->PC_wb,"PC_wb"));
     validpcStage.push_back(new PortValRead(mips1.reg_mem_wb->valid_wb,"valid_PC_wb"));
 
+    /*
+    DEBUG
+    */
+    portVal=new PortValItem(this,mips1.jAddrDecode->out, "JumpAddr");
+    portVal->move(10,20);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
+    portVal=new PortValItem(this,mips1.jAddrDecode->inst, "inst");
+    portVal->move(10,60);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
+    portVal=new PortValItem(this,mips1.jAddrDecode->JumpOnRegister, "JumpOnRegister");
+    portVal->move(10,40);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
+    portVal=new PortValItem(this,mips1.ctrl->JumpOnRegister, "JumpOnRegister");
+    portVal->move(10,80);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
     // value of port signals
     // IF
     portVal=new PortValItem(this,mips1.instmem->addr, "PC");
