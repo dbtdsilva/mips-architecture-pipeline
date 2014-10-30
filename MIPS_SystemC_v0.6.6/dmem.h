@@ -39,7 +39,7 @@ class dmem :public sc_module, public mem32
   SC_CTOR(dmem)
     {
       SC_METHOD(read_mem);
-      sensitive << addr << rd;
+      sensitive_pos(clk);
       SC_METHOD(write_mem);
       sensitive_pos(clk);
 

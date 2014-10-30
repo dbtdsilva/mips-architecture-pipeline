@@ -4,7 +4,7 @@ CONFIG		+= qt thread release
 HEADERS		= mips.h\
                   imem.h decode.h regfile.h alu.h dmem.h control.h\
 		  mem32.h mux.h mux.h reg.h add.h gates.h ext.h shiftl2.h\
-		  regT.h reg_id_exe.h reg_exe_mem.h reg_mem_wb.h\
+		  regT.h reg_id_exe.h reg_exe_mem1.h reg_mem1_mem2.h reg_mem2_wb.h\
 		  hazard.h\
 		  mipsaux.h\
 		  comparator.h jaddrdecode.h\
