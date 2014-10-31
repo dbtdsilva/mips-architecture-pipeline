@@ -24,8 +24,10 @@ public:
 		  sc_port_base &valid_id,    // true if PC in ID valid
 		  sc_port_base &pc_exe,      // PC in EXE (output of reg_id_exe)
 		  sc_port_base &valid_exe,   // true if PC in EXE valid
-		  sc_port_base &pc_mem,
-		  sc_port_base &valid_mem,
+		  sc_port_base &pc_mem1,
+		  sc_port_base &valid_mem1,
+		  sc_port_base &pc_mem2,
+		  sc_port_base &valid_mem2,
 		  sc_port_base &pc_wb,
 		  sc_port_base &valid_wb,
 		  QWidget* parent = 0, const char* name = 0, Qt::WFlags fl = 0 );
@@ -37,7 +39,7 @@ protected:
     virtual unsigned int current(void);
 private:
     PortValRead *PC, *PC_id, *Valid_id, *PC_exe, *Valid_exe,
-                *PC_mem, *Valid_mem, *PC_wb, *Valid_wb;
+                *PC_mem1, *Valid_mem1, *PC_mem2, *Valid_mem2, *PC_wb, *Valid_wb;
 };
 
 #endif // MIPSIMEMVIEW_H

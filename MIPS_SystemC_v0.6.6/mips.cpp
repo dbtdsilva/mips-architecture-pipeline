@@ -329,10 +329,10 @@ void mips::buildArchitecture(void)
 
 	hazard_unit->WriteReg_exe(WriteReg_exe);
 	hazard_unit->RegWrite_exe(RegWrite_exe);
-	hazard_unit->WriteReg_mem(WriteReg_mem1);
-	hazard_unit->RegWrite_mem(RegWrite_mem1);
-	hazard_unit->WriteReg_mem(WriteReg_mem2);
-	hazard_unit->RegWrite_mem(RegWrite_mem2);
+	hazard_unit->WriteReg_mem1(WriteReg_mem1);
+	hazard_unit->RegWrite_mem1(RegWrite_mem1);
+	hazard_unit->WriteReg_mem2(WriteReg_mem2);
+	hazard_unit->RegWrite_mem2(RegWrite_mem2);
 
 	hazard_unit->enable_pc(enable_pc);
 	hazard_unit->enable_ifid(enable_ifid);

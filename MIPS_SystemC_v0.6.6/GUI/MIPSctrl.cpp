@@ -99,6 +99,8 @@ MIPSctrl::MIPSctrl( sc_signal<bool> &clock, sc_signal<bool> &rset, mips &m, QWid
 			            mips1.reg_id_exe->valid_exe,
 			            mips1.reg_exe_mem1->PC_mem1,
 			            mips1.reg_exe_mem1->valid_mem1,
+			            mips1.reg_mem1_mem2->PC_mem2,
+			            mips1.reg_mem1_mem2->valid_mem2,
 			            mips1.reg_mem2_wb->PC_wb,
 			            mips1.reg_mem2_wb->valid_wb,
 				    mdi);

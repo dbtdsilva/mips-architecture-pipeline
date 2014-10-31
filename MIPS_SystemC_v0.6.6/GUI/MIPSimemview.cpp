@@ -13,8 +13,10 @@ MIPSimemview::MIPSimemview( imem &m,
 		            sc_port_base &valid_id,
 		            sc_port_base &pc_exe,
 		            sc_port_base &valid_exe,
-		            sc_port_base &pc_mem,
-		            sc_port_base &valid_mem,
+		            sc_port_base &pc_mem1,
+		            sc_port_base &valid_mem1,
+                    sc_port_base &pc_mem2,
+                    sc_port_base &valid_mem2,
 		            sc_port_base &pc_wb,
 		            sc_port_base &valid_wb,
 		            QWidget* parent,  const char* name, Qt::WFlags fl )
@@ -26,8 +28,10 @@ MIPSimemview::MIPSimemview( imem &m,
     Valid_id  = new PortValRead(valid_id,"valid_id");
     PC_exe = new PortValRead(pc_exe,"PC_exe");
     Valid_exe = new PortValRead(valid_exe,"valid_exe");
-    PC_mem = new PortValRead(pc_mem,"PC_mem");
-    Valid_mem = new PortValRead(valid_mem,"valid_mem");
+    PC_mem1 = new PortValRead(pc_mem1,"PC_mem1");
+    Valid_mem1 = new PortValRead(valid_mem1,"valid_mem1");
+    PC_mem2 = new PortValRead(pc_mem2,"PC_mem2");
+    Valid_mem2 = new PortValRead(valid_mem2,"valid_mem2");
     PC_wb  = new PortValRead(pc_wb,"PC_wb");
     Valid_wb  = new PortValRead(valid_wb,"valid_wb");
 
@@ -41,12 +45,13 @@ QString MIPSimemview::MemItem(unsigned int i)
     char instStr[200];
 
     //PCs
-    if(PC->read() == i) ListStr = "F";
-    else if(PC_id->read()  == i && Valid_id->read()  == 1) ListStr="D";
-    else if(PC_exe->read() == i && Valid_exe->read() == 1) ListStr="E";
-    else if(PC_mem->read() == i && Valid_mem->read() == 1) ListStr="M";
-    else if(PC_wb->read()  == i && Valid_wb->read()  == 1) ListStr="W";
-    else ListStr=" ";
+    if(PC->read() == i) ListStr = "F ";
+    else if(PC_id->read()  == i && Valid_id->read()  == 1) ListStr="D ";
+    else if(PC_exe->read() == i && Valid_exe->read() == 1) ListStr="E ";
+    else if(PC_mem1->read() == i && Valid_mem1->read() == 1) ListStr="M1";
+    else if(PC_mem2->read() == i && Valid_mem2->read() == 1) ListStr="M2";
+    else if(PC_wb->read()  == i && Valid_wb->read()  == 1) ListStr="W ";
+    else ListStr="  ";
 
     //address
     HexVal.setNum(i,16);
@@ -106,8 +111,10 @@ MIPSimemview::~MIPSimemview()
     delete Valid_id;
     delete PC_exe;
     delete Valid_exe;
-    delete PC_mem;
-    delete Valid_mem;
+    delete PC_mem1;
+    delete Valid_mem1;
+    delete PC_mem2;
+    delete Valid_mem2;
     delete PC_wb;
     delete Valid_wb;
 }
