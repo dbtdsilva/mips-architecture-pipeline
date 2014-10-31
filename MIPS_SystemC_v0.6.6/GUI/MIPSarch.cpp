@@ -81,7 +81,7 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
     /*
     DEBUG
     */
-    portVal=new PortValItem(this,mips1.jAddrDecode->out, "JumpAddr");
+    /*portVal=new PortValItem(this,mips1.jAddrDecode->out, "JumpAddr");
     portVal->move(10,20);
     portVal->setColor(QColor("blue"));
     portValVec.push_back(portVal);
@@ -99,7 +99,7 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
     portVal=new PortValItem(this,mips1.ctrl->JumpOnRegister, "JumpOnRegister");
     portVal->move(10,80);
     portVal->setColor(QColor("blue"));
-    portValVec.push_back(portVal);
+    portValVec.push_back(portVal);*/
 
     // value of port signals
     // IF
