@@ -28,8 +28,8 @@ SC_MODULE(reg_mem1_mem2_t) {
 	sc_in  < sc_uint<5> > WriteReg_mem1;
 	sc_out < sc_uint<5> > WriteReg_mem2;
 
-	sc_in  < bool > MemtoReg_mem1, RegWrite_mem1;
-	sc_out < bool > MemtoReg_mem2, RegWrite_mem2;
+	sc_in  < bool > MemtoReg_mem1, RegWrite_mem1, MemRead_mem1;
+	sc_out < bool > MemtoReg_mem2, RegWrite_mem2, MemRead_mem2;
 
 	sc_in  < sc_uint<32> > PC_mem1;   // only for visualization purposes
 	sc_out < sc_uint<32> > PC_mem2;   // only for visualization purposes
@@ -38,18 +38,25 @@ SC_MODULE(reg_mem1_mem2_t) {
 
 	// Modules
 	regT < sc_uint<5> >  *WriteReg;
-	regT < bool > *MemtoReg, *RegWrite;
+	regT < bool > *MemtoReg, *RegWrite, *MemRead;
 
 	regT < sc_uint<32> > *aluOut, *PC;        // only for visualization purposes
 	regT < bool > *valid;            // only for visualization purposes
 
 	SC_CTOR(reg_mem1_mem2_t) {
-		aluOut = new regT < sc_uint<32> > ("aluOut");;
+		aluOut = new regT < sc_uint<32> > ("aluOut");
 		aluOut->din(aluOut_mem1);
 		aluOut->dout(aluOut_mem2);
 		aluOut->clk(clk);
 		aluOut->enable(enable);
 		aluOut->reset(reset);
+
+		MemRead = new regT < bool > ("MemRead");
+		MemRead->din(MemRead_mem1);
+		MemRead->dout(MemRead_mem2);
+		MemRead->clk(clk);
+		MemRead->enable(enable);
+		MemRead->reset(reset);
 
 		WriteReg = new regT < sc_uint<5> > ("WriteReg");
 		WriteReg->din(WriteReg_mem1);

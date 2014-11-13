@@ -48,6 +48,8 @@ void control::entry()
 		JumpOnRegister.write(0);
 		RegWrite.write(0);
 
+		RegDst.write(0);
+		MemtoReg.write(0);
 		BranchNotEqual.write(0);
 		ALUSrc.write(0);
 	    MemRead.write(0);
@@ -59,7 +61,9 @@ void control::entry()
 		Jump.write(1);
 		JumpOnRegister.write(0);
 		RegWrite.write(1);
+		MemtoReg.write(0);
 
+		RegDst.write(0);
 		BranchNotEqual.write(0);
 		ALUSrc.write(0);
 	    MemRead.write(0);
@@ -71,6 +75,8 @@ void control::entry()
 	Jump.write(0);
 		JumpOnRegister.write(0);
 
+		RegDst.write(0);
+		MemtoReg.write(0);
 		BranchNotEqual.write(0);
         ALUSrc.write(0);
 	    RegWrite.write(0);
@@ -83,6 +89,8 @@ void control::entry()
 		Jump.write(0);
 		JumpOnRegister.write(0);
 
+		RegDst.write(0);
+		MemtoReg.write(0);
 		BranchNotEqual.write(1);
         ALUSrc.write(0);
 	    RegWrite.write(0);
@@ -111,7 +119,8 @@ void control::entry()
 		JumpOnRegister.write(0);
 
 		BranchNotEqual.write(1);
-
+		RegDst.write(0);
+		MemtoReg.write(0);
         ALUSrc.write(1);
 	    RegWrite.write(0);
 	    MemRead.write(0);

@@ -7,7 +7,7 @@
 void hazard::detect_hazard()
 {
 	//data hazards
-	if( rs.read() !=0 && rs.read() == WriteReg_exe.read() && RegWrite_exe.read()==true
+	/*if( rs.read() !=0 && rs.read() == WriteReg_exe.read() && RegWrite_exe.read()==true
 	    || rs.read() !=0 && rs.read() == WriteReg_mem1.read() && RegWrite_mem1.read()==true
 	    || rt.read() !=0 && rt.read() == WriteReg_exe.read() && RegWrite_exe.read()==true
 	    || rt.read() !=0 && rt.read() == WriteReg_mem1.read() && RegWrite_mem1.read()==true
@@ -24,11 +24,11 @@ void hazard::detect_hazard()
 		reset_idexe.write(false);
 		reset_ifid.write(true);
 	}
-	else {
+	else {*/
 	    enable_pc.write(true);
 		enable_ifid.write(true);
 		reset_idexe.write(false);
 		reset_ifid.write(false);
-	}
+	//}
 }
 

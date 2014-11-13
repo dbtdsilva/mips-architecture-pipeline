@@ -26,6 +26,9 @@ SC_MODULE(reg_id_exe_t) {
 	sc_in  < sc_uint<32> > rega_id, regb_id, imm_id;// PC4_id;
 	sc_out < sc_uint<32> > rega_exe, regb_exe, imm_exe;// PC4_exe;
 
+	sc_in  < sc_uint<5> > rs_id, rt_id;
+	sc_out < sc_uint<5> > rs_exe, rt_exe;
+
 	sc_in  < sc_uint<5> > WriteReg_id;
 	sc_out < sc_uint<5> > WriteReg_exe;
 
@@ -47,7 +50,7 @@ SC_MODULE(reg_id_exe_t) {
 
 	regT < sc_uint<32> > *rega,*regb,*imm;//*PC4;
 	regT < bool > *MemRead, *MemWrite, *MemtoReg, *RegWrite, *ALUSrc; //*Branch,
-	regT < sc_uint<5> > *WriteReg;
+	regT < sc_uint<5> > *rs, *rt, *WriteReg;
 	regT < sc_uint<3> > *ALUOp;
 
 	regT < sc_uint<32> > *PC;      // only for visualization purposes
@@ -55,7 +58,21 @@ SC_MODULE(reg_id_exe_t) {
 
 	SC_CTOR(reg_id_exe_t) {
 
-		rega = new regT < sc_uint<32> > ("rega");;
+		rs = new regT < sc_uint<5> > ("rs");
+		rs->din(rs_id);
+		rs->dout(rs_exe);
+		rs->clk(clk);
+		rs->enable(enable);
+		rs->reset(reset);
+
+		rt = new regT < sc_uint<5> > ("rt");
+		rt->din(rt_id);
+		rt->dout(rt_exe);
+		rt->clk(clk);
+		rt->enable(enable);
+		rt->reset(reset);
+
+		rega = new regT < sc_uint<32> > ("rega");
 		rega->din(rega_id);
 		rega->dout(rega_exe);
 		rega->clk(clk);

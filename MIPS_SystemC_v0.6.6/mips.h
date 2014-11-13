@@ -17,6 +17,7 @@
 #include "dmem.h"
 #include "control.h"
 #include "hazard.h"
+#include "forward.h"
 #include "comparator.h"
 
 #include "mux.h"
@@ -67,13 +68,20 @@ SC_MODULE(mips) {
    control           *ctrl;      // control
    comparator        *comp;
    mux4< sc_uint<5> >  *mr;       // selects destination register
+   mux4< sc_uint<32> >  *mux_rs_id, *mux_rt_id, *mux_regb_exe;
+   mux<sc_uint<32> > *mux_rsActive, *mux_rtActive;
    mux< sc_uint<32> > *mrs, *mrt;
    ext *e1;                      // sign extends imm to 32 bits
    xorgate *xor1;
    orgate *or_reset_idexe;
    orgate *or_reset_ifid;
    hazard *hazard_unit;
+   forward *forward_unit;
    jaddrdecode *jAddrDecode;
+
+   /* Forward */
+   sc_signal<bool> forward_idexe_rs0, forward_idexe_rs1, forward_idexe_rt0, forward_idexe_rt1;
+   sc_signal<bool> forward_exemem1_regb0, forward_exemem1_regb1, forward_idexe_rsActive, forward_idexe_rtActive;
    //EXE
    alu               *alu1;      // ALU
    mux< sc_uint<32> > *m1;       // selects 2nd ALU operand
@@ -114,7 +122,7 @@ SC_MODULE(mips) {
    sc_signal <bool> equal, BranchResult, BranchNotEqual;
    sc_signal <bool> Jump, JumpOnRegister;
    sc_signal < sc_uint<32> > addr_ext; // imm_ext shift left 2
-   sc_signal < sc_uint<5> > rs, rt, rd;
+   sc_signal < sc_uint<5> > rs, rs_exe, rt, rt_exe, rd;
    sc_signal < sc_uint<16> > imm;
    sc_signal < sc_uint<6> > opcode;
    sc_signal < sc_uint<5> > shamt;
@@ -124,14 +132,14 @@ SC_MODULE(mips) {
    // register file signals
    sc_signal < sc_uint<5> > WriteReg;  // register to write
 
-   sc_signal < sc_uint<32> > regdata1, regdata1_mux, // value of register rs
-                             regdata2, regdata2_mux, // value of regiter rt
-			     WriteVal; // value to write in register WriteReg
+   sc_signal < sc_uint<32> > regdata1, regdata1_idexe, regdata1_mux, ResultFWD_rs, // value of register rs
+                             regdata2, regdata2_idexe, regdata2_mux, ResultFWD_rt, // value of regiter rt
+			                     WriteVal; // value to write in register WriteReg
 
    sc_signal < sc_uint<32> > imm_ext;  // imm sign extended
 
    sc_signal < sc_uint<32> > rega_exe, // value of register rs EXE phase
-                             regb_exe, // value of regiter rt EXE phase
+                             regb_exe, regb_exemem1, // value of regiter rt EXE phase
                              regb_mem1; // value of regiter rt MEM phase
 
    sc_signal <bool> reset_haz_idexe, reset_idexe, reset_haz_ifid, reset_ifid;
@@ -181,7 +189,7 @@ SC_MODULE(mips) {
    sc_signal < sc_uint<32> > ALUOut_mem2;
    sc_signal < sc_uint<32> > MemOut;   // data memory output
    sc_signal < sc_uint<5> > WriteReg_mem2;
-   sc_signal <bool> RegWrite_mem2, MemtoReg_mem2;
+   sc_signal <bool> MemRead_mem2, RegWrite_mem2, MemtoReg_mem2;
    // the following two signals are not used by the architecture
    // they are used only for visualization purposes
    sc_signal < sc_uint<32> > PC_mem2;
