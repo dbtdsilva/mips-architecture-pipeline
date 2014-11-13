@@ -6,13 +6,6 @@
 SC_MODULE( forward )
 {
   public:
-    /*sc_in< sc_uint<5> >  rs;
-    sc_in< sc_uint<5> >  rt;
-    sc_in< sc_uint<5> >  WriteReg_exe, WriteReg_mem1, WriteReg_mem2;
-    sc_in< bool >  RegWrite_exe, RegWrite_mem1, RegWrite_mem2, BranchTaken, Jump;
-    sc_out< bool >  enable_pc, enable_ifid, reset_idexe, reset_ifid;
-*/
-
     sc_in<sc_uint<5> > WriteReg_exe, WriteReg_mem1, WriteReg_mem2, WriteReg_wb;
     sc_in<sc_uint<5> > rs, rt, rs_exe, rt_exe;
     // Control signals
