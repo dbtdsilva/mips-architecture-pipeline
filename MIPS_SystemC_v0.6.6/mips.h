@@ -112,10 +112,11 @@ SC_MODULE(mips) {
    sc_signal <bool> forward_ifid_rs0, forward_ifid_rs1, forward_ifid_rt0, forward_ifid_rt1, forward_ifid_rtActive, forward_ifid_rsActive;
    sc_signal <bool> forward_id_rs0, forward_id_rs1, forward_id_rt0, forward_id_rt1, forward_id_rtActive, forward_id_rsActive;
 
-   /* End */
-
+   sc_signal <sc_uint<32> > ResultRDD_fwd_mem1;
    mux<sc_uint<32> > *rsActive_exe, *rtActive_exe;
-   mux4<sc_uint<32> > *rtFwd_exe, *rsFwd_exe;
+   mux4<sc_uint<32> > *rtFwd_exe, *rsFwd_exe, *rddFwd_mem1;
+
+   /* End */
 
    // IF
    sc_signal < sc_uint<32> > PC,       // Program Counter
@@ -202,7 +203,7 @@ SC_MODULE(mips) {
    sc_signal < sc_uint<32> > ALUOut_mem2;
    sc_signal < sc_uint<32> > MemOut;   // data memory output
    sc_signal < sc_uint<5> > WriteReg_mem2;
-   sc_signal <bool> RegWrite_mem2, MemtoReg_mem2;
+   sc_signal <bool> RegWrite_mem2, MemtoReg_mem2, MemRead_mem2;
    // the following two signals are not used by the architecture
    // they are used only for visualization purposes
    sc_signal < sc_uint<32> > PC_mem2;

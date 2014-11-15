@@ -153,10 +153,25 @@ void mips::buildEXE(void)
 	rsActive_exe->din1(ValRS_fwd_idexe);
 	rsActive_exe->dout(ResultRS_fwd_exe);
 
+	rtFwd_exe = new mux4< sc_uint<32> >("rtFwd_exe");
+	rtFwd_exe->sel0(forward_exe_rt0);
+	rtFwd_exe->sel1(forward_exe_rt1);
+	rtFwd_exe->din0(AluOut_fwd_idexe);
+	rtFwd_exe->din1(AluOut_mem1_fwd_idexe);
+	rtFwd_exe->din2(AluOut_mem2_fwd_idexe);
+	rtFwd_exe->din3(MemOut_fwd_idexe);
+	rtFwd_exe->dout(ValRT_fwd_idexe);
+
+	rtActive_exe = new mux< sc_uint<32> >("rtActive_exe");
+	rtActive_exe->sel(forward_exe_rtActive);
+	rtActive_exe->din0(regb_exe);
+	rtActive_exe->din1(ValRT_fwd_idexe);
+	rtActive_exe->dout(ResultRT_fwd_exe);
+
 	// Selects second operand of ALU
 	m1 = new mux< sc_uint<32> >("muxOp");
 	m1->sel(ALUSrc_exe);
-	m1->din0(regb_exe);
+	m1->din0(ResultRT_fwd_exe);
 	m1->din1(imm_exe);
 	m1->dout(ALUIn2);
 	// ALU
@@ -173,10 +188,19 @@ void mips::buildEXE(void)
  */
 void mips::buildMEM1(void)
 {
+	rddFwd_mem1 = new mux4<sc_uint<32> >("rddFwd_mem1");
+	rddFwd_mem1->sel0(forward_mem1_regb0);
+	rddFwd_mem1->sel1(forward_mem1_regb1);
+	rddFwd_mem1->din0(regb_mem1);
+	rddFwd_mem1->din1(MemOut);
+	rddFwd_mem1->din2(WriteVal);
+	rddFwd_mem1->din3(WriteVal);
+	rddFwd_mem1->dout(ResultRDD_fwd_mem1);
+
 	// Data Memory
 	datamem = new dmem("datamem");
 	datamem->addr(ALUOut_mem1);
-	datamem->din(regb_mem1);
+	datamem->din(ResultRDD_fwd_mem1);
 	datamem->wr(MemWrite_mem1);
 	datamem->rd(MemRead_mem1);
 	datamem->clk(clk);
@@ -338,7 +362,7 @@ void mips::buildArchitecture(void)
 	reg_exe_mem1->MemtoReg_mem1(MemtoReg_mem1);
 	reg_exe_mem1->RegWrite_exe(RegWrite_exe);
 	reg_exe_mem1->RegWrite_mem1(RegWrite_mem1);
-	reg_exe_mem1->regb_exe(regb_exe);
+	reg_exe_mem1->regb_exe(ResultRT_fwd_exe);
 	reg_exe_mem1->regb_mem1(regb_mem1);
 	reg_exe_mem1->WriteReg_exe(WriteReg_exe);
 	reg_exe_mem1->WriteReg_mem1(WriteReg_mem1);
@@ -355,6 +379,8 @@ void mips::buildArchitecture(void)
 	reg_mem1_mem2 = new reg_mem1_mem2_t("reg_mem1_mem2");
 	reg_mem1_mem2->aluOut_mem1(ALUOut_mem1);
 	reg_mem1_mem2->aluOut_mem2(ALUOut_mem2);
+	reg_mem1_mem2->MemRead_mem1(MemRead_mem1);
+	reg_mem1_mem2->MemRead_mem2(MemRead_mem2);
 	reg_mem1_mem2->WriteReg_mem1(WriteReg_mem1);
 	reg_mem1_mem2->WriteReg_mem2(WriteReg_mem2);
 	reg_mem1_mem2->MemtoReg_mem1(MemtoReg_mem1);
@@ -402,6 +428,17 @@ void mips::buildArchitecture(void)
     forward_unit->rt(rt);
     forward_unit->rs_exe(rs_exe);
     forward_unit->rt_exe(rt_exe);
+
+    forward_unit->Branch(Branch);
+    forward_unit->RegWrite_exe(RegWrite_exe);
+    forward_unit->RegWrite_mem1(RegWrite_mem1);
+    forward_unit->RegWrite_mem2(RegWrite_mem2);
+    forward_unit->RegWrite_wb(RegWrite_wb);
+    forward_unit->MemRead_exe(MemRead_exe);
+    forward_unit->MemRead_mem1(MemRead_mem1);
+    forward_unit->MemRead_mem2(MemRead_mem2);
+    forward_unit->MemWrite_exe(MemWrite_exe);
+    forward_unit->MemWrite(MemWrite);
 
     forward_unit->forward_idexe_rs0(forward_idexe_rs0);
     forward_unit->forward_idexe_rs1(forward_idexe_rs1);
@@ -457,6 +494,7 @@ mips::~mips(void)
 	delete m1;
 	delete alu1;
 	delete datamem;
+	delete forward_unit;
 	delete m2;
 	delete ctrl;
 	delete hazard_unit;

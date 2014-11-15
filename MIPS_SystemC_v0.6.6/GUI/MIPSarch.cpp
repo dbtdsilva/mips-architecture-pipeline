@@ -245,12 +245,12 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
 
     portVal=new PortValItem(this,mips1.rfile->data1, "r1_out");
     portVal->move(372,250);
-    portVal->setColor(QColor("blue"));
+    portVal->setColor(QColor("red"));
     portValVec.push_back(portVal);
 
     portVal=new PortValItem(this,mips1.rfile->data2, "r2_out");
     portVal->move(372,292);
-    portVal->setColor(QColor("blue"));
+    portVal->setColor(QColor("red"));
     portValVec.push_back(portVal);
 
     portVal=new PortValItem(this,mips1.e1->dout, "imm_ext");
@@ -366,14 +366,16 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
     portVal->setColor(QColor("blue"));
     portValVec.push_back(portVal);
 
-    portVal=new PortValItem(this,mips1.reg_id_exe->rega_exe, "rega_exe");
+    //portVal=new PortValItem(this,mips1.reg_id_exe->rega_exe, "rega_exe");
+    portVal=new PortValItem(this,mips1.rsActive_exe->dout, "rega_exe");
     portVal->move(439,250);
-    portVal->setColor(QColor("blue"));
+    portVal->setColor(QColor("red"));
     portValVec.push_back(portVal);
 
-    portVal=new PortValItem(this,mips1.reg_id_exe->regb_exe, "regb_exe");
+    //portVal=new PortValItem(this,mips1.reg_id_exe->regb_exe, "regb_exe");
+    portVal=new PortValItem(this,mips1.rtActive_exe->dout, "regb_exe");
     portVal->move(439,292);
-    portVal->setColor(QColor("blue"));
+    portVal->setColor(QColor("red"));
     portValVec.push_back(portVal);
 
     portVal=new PortValItem(this,mips1.alu1->din2, "alu_din2");
@@ -417,17 +419,15 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
     portVal->setColor(QColor("blue"));
     portValVec.push_back(portVal);
 
-    portVal=new PortValItem(this,mips1.reg_exe_mem1->regb_mem1, "regb_mem1");
+    portVal=new PortValItem(this,mips1.rddFwd_mem1->dout, "regb_mem1");
     portVal->move(615,320);
-    portVal->setColor(QColor("blue"));
+    portVal->setColor(QColor("red"));
     portValVec.push_back(portVal);
 
     portVal=new PortValItem(this,mips1.reg_exe_mem1->WriteReg_mem1, "WriteReg_mem1");
     portVal->move(621,383);
     portVal->setColor(QColor("blue"));
     portValVec.push_back(portVal);
-
-
 
     //MEM2
     portVal=new PortValItem(this,mips1.reg_mem1_mem2->RegWrite_mem2, "RegWrite_mem2");
