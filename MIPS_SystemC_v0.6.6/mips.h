@@ -103,7 +103,6 @@ SC_MODULE(mips) {
    sc_signal <sc_uint<32> > AluOut_fwd_idexe, AluOut_mem1_fwd_idexe, AluOut_mem2_fwd_idexe, MemOut_fwd_idexe;
    sc_signal <sc_uint<32> > MemOut_fwd_exemem1, WriteVal_fwd_exemem1;
 
-   sc_signal <sc_uint<32> > ValRS_fwd_idexe, ValRT_fwd_idexe, ResultRS_fwd_exe, ResultRT_fwd_exe, Result_fwd_id;
    sc_signal <bool> forward_idexe_rs0, forward_idexe_rs1, forward_idexe_rt0, forward_idexe_rt1, forward_idexe_rtActive, forward_idexe_rsActive,
                               forward_exemem1_regb0, forward_exemem1_regb1;
 
@@ -112,9 +111,10 @@ SC_MODULE(mips) {
    sc_signal <bool> forward_ifid_rs0, forward_ifid_rs1, forward_ifid_rt0, forward_ifid_rt1, forward_ifid_rtActive, forward_ifid_rsActive;
    sc_signal <bool> forward_id_rs0, forward_id_rs1, forward_id_rt0, forward_id_rt1, forward_id_rtActive, forward_id_rsActive;
 
-   sc_signal <sc_uint<32> > ResultRDD_fwd_mem1;
-   mux<sc_uint<32> > *rsActive_exe, *rtActive_exe;
-   mux4<sc_uint<32> > *rtFwd_exe, *rsFwd_exe, *rddFwd_mem1;
+   sc_signal <sc_uint<32> > ValRS_fwd_idexe, ValRT_fwd_idexe, ResultRS_fwd_exe, ResultRT_fwd_exe;
+   sc_signal <sc_uint<32> > ResultRDD_fwd_mem1, ValRT_fwd_ifid, ValRS_fwd_ifid, ResultRT_fwd_id, ResultRS_fwd_id;
+   mux<sc_uint<32> > *rsActive_exe, *rtActive_exe, *rsActive_id, *rtActive_id;
+   mux4<sc_uint<32> > *rtFwd_exe, *rsFwd_exe, *rsFwd_id, *rtFwd_id, *rddFwd_mem1;
 
    /* End */
 

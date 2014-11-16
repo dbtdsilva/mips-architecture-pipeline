@@ -65,6 +65,36 @@ void mips::buildID(void)
 	rfile->datawr(WriteVal);
 	rfile->clk(clk);
 	rfile->reset(reset);
+
+	rsFwd_id = new mux4< sc_uint<32> >("rsFwd_id");
+	rsFwd_id->sel0(forward_id_rs0);
+	rsFwd_id->sel1(forward_id_rs1);
+	rsFwd_id->din0(AluOut_fwd_ifid);
+	rsFwd_id->din1(AluOut_mem1_fwd_ifid);
+	rsFwd_id->din2(AluOut_mem2_fwd_ifid);
+	rsFwd_id->din3(MemOut_fwd_ifid);
+	rsFwd_id->dout(ValRS_fwd_ifid);
+
+	rsActive_id = new mux< sc_uint<32> >("rsActive_id");
+	rsActive_id->sel(forward_id_rsActive);
+	rsActive_id->din0(regdata1_mux);
+	rsActive_id->din1(ValRS_fwd_ifid);
+	rsActive_id->dout(ResultRS_fwd_id);
+
+	rtFwd_id = new mux4< sc_uint<32> >("rtFwd_id");
+	rtFwd_id->sel0(forward_id_rt0);
+	rtFwd_id->sel1(forward_id_rt1);
+	rtFwd_id->din0(AluOut_fwd_ifid);
+	rtFwd_id->din1(AluOut_mem1_fwd_ifid);
+	rtFwd_id->din2(AluOut_mem2_fwd_ifid);
+	rtFwd_id->din3(MemOut_fwd_ifid);
+	rtFwd_id->dout(ValRT_fwd_ifid);
+
+	rtActive_id = new mux< sc_uint<32> >("rtActive_id");
+	rtActive_id->sel(forward_id_rtActive);
+	rtActive_id->din0(regdata2_mux);
+	rtActive_id->din1(ValRT_fwd_ifid);
+	rtActive_id->dout(ResultRT_fwd_id);
 	// 16 to 32 bit signed Immediate extension
 	e1 = new ext("ext");
 	e1->din(imm);
@@ -95,12 +125,12 @@ void mips::buildID(void)
 	ctrl->JumpOnRegister(JumpOnRegister);
 	mrs = new mux< sc_uint<32> >("muxRs");
 	mrs->sel(Jump);
-	mrs->din0(regdata1_mux);
+	mrs->din0(ResultRS_fwd_id);
 	mrs->din1(PC4_id);
 	mrs->dout(regdata1);
 	mrt = new mux< sc_uint<32> >("muxRt");
 	mrt->sel(Jump);
-	mrt->din0(regdata2_mux);
+	mrt->din0(ResultRT_fwd_id);
 	mrt->din1(const0);
 	mrt->dout(regdata2);
 	// Selects Register to Write
@@ -117,7 +147,7 @@ void mips::buildID(void)
 	jAddrDecode->inst(inst_id);
 	jAddrDecode->PC_id(PC_id);
 	jAddrDecode->JumpOnRegister(JumpOnRegister);
-	jAddrDecode->data1(regdata1_mux);
+	jAddrDecode->data1(ResultRS_fwd_id);
 	jAddrDecode->out(JumpAddr);
 	comp = new comparator("comp");
 	comp->din1(regdata1);
