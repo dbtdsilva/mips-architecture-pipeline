@@ -467,8 +467,9 @@ void mips::buildArchitecture(void)
     forward_unit->MemRead_exe(MemRead_exe);
     forward_unit->MemRead_mem1(MemRead_mem1);
     forward_unit->MemRead_mem2(MemRead_mem2);
+    forward_unit->MemRead(MemRead);
     forward_unit->MemWrite_exe(MemWrite_exe);
-    forward_unit->MemWrite(MemWrite);
+    //forward_unit->MemWrite(MemWrite);
 
     forward_unit->forward_idexe_rs0(forward_idexe_rs0);
     forward_unit->forward_idexe_rs1(forward_idexe_rs1);
