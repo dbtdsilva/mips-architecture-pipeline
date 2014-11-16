@@ -134,7 +134,7 @@ SC_MODULE(mips) {
    sc_signal < sc_uint<5> > const31;
    // instruction fields
    sc_signal <bool> equal, BranchResult, BranchNotEqual;
-   sc_signal <bool> Jump, JumpOnRegister;
+   sc_signal <bool> Jump, JumpOnRegister, JumpOnRegister_exe, JumpOnRegister_mem1;
    sc_signal < sc_uint<32> > addr_ext; // imm_ext shift left 2
    sc_signal < sc_uint<5> > rs, rt, rd;
    sc_signal < sc_uint<16> > imm;

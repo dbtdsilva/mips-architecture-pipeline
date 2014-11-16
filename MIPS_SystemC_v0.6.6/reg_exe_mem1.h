@@ -29,8 +29,8 @@ SC_MODULE(reg_exe_mem1_t) {
 	sc_in  < sc_uint<5> > WriteReg_exe, rt_exe;
 	sc_out < sc_uint<5> > WriteReg_mem1, rt_mem1;
 
-	sc_in  < bool > MemRead_exe, MemWrite_exe, MemtoReg_exe, RegWrite_exe, Branch_exe;
-	sc_out < bool > MemRead_mem1, MemWrite_mem1, MemtoReg_mem1, RegWrite_mem1, Branch_mem1;
+	sc_in  < bool > MemRead_exe, MemWrite_exe, MemtoReg_exe, RegWrite_exe, Branch_exe, JumpOnRegister_exe;
+	sc_out < bool > MemRead_mem1, MemWrite_mem1, MemtoReg_mem1, RegWrite_mem1, Branch_mem1, JumpOnRegister_mem1;
 
 	//sc_in  < bool > Branch_exe, Zero_exe;
 	//sc_out < bool > Branch_mem, Zero_mem;
@@ -47,7 +47,7 @@ SC_MODULE(reg_exe_mem1_t) {
 	regT < sc_uint<32> > *writeval, *memout;
 	regT < sc_uint<32> > *aluOut, *regb, *BranchTarget;
 	regT < sc_uint<5> >  *WriteReg, *rt;
-	regT < bool > *MemRead, *MemWrite, *MemtoReg, *RegWrite, *Branch;
+	regT < bool > *MemRead, *MemWrite, *MemtoReg, *RegWrite, *Branch, *JumpOnRegister;
 
 	regT < sc_uint<32> > *PC;        // only for visualization purposes
 	regT < bool > *valid;            // only for visualization purposes
@@ -123,14 +123,14 @@ SC_MODULE(reg_exe_mem1_t) {
 		Branch->clk(clk);
 		Branch->enable(enable);
 		Branch->reset(reset);
-/*
-		Zero = new regT < bool >("Zero");
-		Zero->din(Zero_exe);
-		Zero->dout(Zero_mem);
-		Zero->clk(clk);
-		Zero->enable(enable);
-		Zero->reset(reset);
-*/
+
+		JumpOnRegister = new regT < bool >("JumpOnRegister");
+		JumpOnRegister->din(JumpOnRegister_exe);
+		JumpOnRegister->dout(JumpOnRegister_mem1);
+		JumpOnRegister->clk(clk);
+		JumpOnRegister->enable(enable);
+		JumpOnRegister->reset(reset);
+
 		RegWrite = new regT < bool >("RegWrite");
 		RegWrite->din(RegWrite_exe);
 		RegWrite->dout(RegWrite_mem1);

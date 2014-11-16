@@ -32,8 +32,8 @@ SC_MODULE(reg_id_exe_t) {
 	sc_in  < bool > MemRead_id, MemWrite_id, MemtoReg_id;
 	sc_out < bool > MemRead_exe, MemWrite_exe, MemtoReg_exe;
 
-	sc_in  < bool > ALUSrc_id, RegWrite_id, Branch;
-	sc_out < bool > ALUSrc_exe, RegWrite_exe, Branch_exe;
+	sc_in  < bool > ALUSrc_id, RegWrite_id, Branch, JumpOnRegister;
+	sc_out < bool > ALUSrc_exe, RegWrite_exe, Branch_exe, JumpOnRegister_exe;
 
 	sc_in  < sc_uint<3> > ALUOp_id;
 	sc_out < sc_uint<3> > ALUOp_exe;
@@ -51,7 +51,7 @@ SC_MODULE(reg_id_exe_t) {
 
 	regT < sc_uint<32> > *alu_mem1, *alu_mem2, *alu, *memout;
 
-	regT < bool > *MemRead, *MemWrite, *MemtoReg, *RegWrite, *ALUSrc, *Branch_rgt;
+	regT < bool > *MemRead, *MemWrite, *MemtoReg, *RegWrite, *ALUSrc, *Branch_rgt, *Jump;
 	regT < sc_uint<5> > *WriteReg, *rsReg, *rtReg;
 	regT < sc_uint<3> > *ALUOp;
 
@@ -80,6 +80,13 @@ SC_MODULE(reg_id_exe_t) {
 		Branch_rgt->clk(clk);
 		Branch_rgt->enable(enable);
 		Branch_rgt->reset(reset);
+
+		Jump = new regT < bool > ("Jump");
+		Jump->din(JumpOnRegister);
+		Jump->dout(JumpOnRegister_exe);
+		Jump->clk(clk);
+		Jump->enable(enable);
+		Jump->reset(reset);
 
 		rtReg = new regT < sc_uint<5> > ("rtReg");
 		rtReg->din(rt);

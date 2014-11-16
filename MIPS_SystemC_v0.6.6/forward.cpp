@@ -20,12 +20,7 @@ void forward::detect_forward()
     forward_ifid_rs0.write(0);
     forward_ifid_rs1.write(0);
     forward_ifid_rsActive.write(0);
-
-    forward_ifid_rt0.write(0);
-    forward_ifid_rt1.write(0);
-    forward_ifid_rtActive.write(0);
-
-    if (Branch.read()) {
+    if (Branch.read() || JumpOnRegister.read()) {
 
         forward_ifid_rsActive.write(1);
         if (rs.read() != 0 && rs.read() == WriteReg_mem1.read() && !MemRead_mem1.read() && RegWrite_mem1.read()) {
@@ -40,7 +35,12 @@ void forward::detect_forward()
             printf("NO FORWARD TO IF/ID RS\n");
             forward_ifid_rsActive.write(0);
         }
+    }
 
+    forward_ifid_rt0.write(0);
+    forward_ifid_rt1.write(0);
+    forward_ifid_rtActive.write(0);
+    if (Branch.read()) {
         forward_ifid_rtActive.write(1);
         if (rt.read() != 0 && rt.read() == WriteReg_mem1.read() && !MemRead_mem1.read()
                                                         && !MemRead.read() && RegWrite_mem1.read()) {
@@ -58,7 +58,6 @@ void forward::detect_forward()
         }
     }
 
-
     forward_idexe_rs0.write(0);
     forward_idexe_rs1.write(0);
     forward_idexe_rsActive.write(0);
@@ -67,7 +66,7 @@ void forward::detect_forward()
     forward_idexe_rt1.write(0);
     forward_idexe_rtActive.write(0);
 
-    if (!Branch_exe.read()) {
+    if (!Branch_exe.read() && !JumpOnRegister_exe.read()) {
         forward_idexe_rsActive.write(1);
         if (rs_exe.read() != 0 && rs_exe.read() == WriteReg_mem1.read() && !MemRead_mem1.read() && RegWrite_mem1.read()) {
             printf("EXE -> ID/EXE (RS) (AluOut)\n");
@@ -121,7 +120,7 @@ void forward::detect_forward()
 
 
     /* FORWARD PARA O RDD DO REGISTO EXE_MEM1 */
-    if(!Branch_mem1.read()) {
+    if(!Branch_mem1.read() && !JumpOnRegister_mem1.read()) {
         if (rt_mem1.read() != 0 && rt_mem1.read() == WriteReg_wb.read() && MemWrite_mem1.read()
                                                 && RegWrite_wb.read() && MemRead_wb.read()) {
             printf("MEM2 -> EXE/MEM1 (RDD) (MemOut)\n");
