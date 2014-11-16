@@ -98,7 +98,7 @@ SC_MODULE(mips) {
    // Signals
    /* FORWARD RELATED */
    forward *forward_unit;
-   sc_signal <sc_uint<5> > rs_exe, rt_exe;
+   sc_signal <sc_uint<5> > rs_exe, rt_exe, rt_mem1;
    sc_signal <sc_uint<32> > AluOut_fwd_ifid, AluOut_mem1_fwd_ifid, AluOut_mem2_fwd_ifid, MemOut_fwd_ifid;
    sc_signal <sc_uint<32> > AluOut_fwd_idexe, AluOut_mem1_fwd_idexe, AluOut_mem2_fwd_idexe, MemOut_fwd_idexe;
    sc_signal <sc_uint<32> > MemOut_fwd_exemem1, WriteVal_fwd_exemem1;
@@ -162,7 +162,7 @@ SC_MODULE(mips) {
    sc_signal <bool> RegWrite, RegDst;
    sc_signal <bool> ALUSrc;
    sc_signal < sc_uint<3> > ALUOp;
-   sc_signal <bool> Branch;
+   sc_signal <bool> Branch, Branch_exe;
 
    // the following two signals are not used by the architecture
    // they are used only for visualization purposes
@@ -192,7 +192,7 @@ SC_MODULE(mips) {
    sc_signal < sc_uint<5> > WriteReg_mem1;
    sc_signal <bool> MemRead_mem1, MemWrite_mem1, MemtoReg_mem1;
    sc_signal <bool> RegWrite_mem1;
-   //sc_signal <bool> Branch_mem, Zero_mem;
+   sc_signal <bool> Branch_mem1;
 
    // the following two signals are not used by the architecture
    // they are used only for visualization purposes

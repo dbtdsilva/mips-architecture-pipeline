@@ -328,6 +328,8 @@ void mips::buildArchitecture(void)
 	reg_id_exe->MemtoReg_exe(MemtoReg_exe);
 	reg_id_exe->RegWrite_id(RegWrite);
 	reg_id_exe->RegWrite_exe(RegWrite_exe);
+	reg_id_exe->Branch(Branch);
+	reg_id_exe->Branch_exe(Branch_exe);
 	reg_id_exe->ALUSrc_id(ALUSrc);
 	reg_id_exe->ALUSrc_exe(ALUSrc_exe);
 	reg_id_exe->ALUOp_id(ALUOp);
@@ -354,6 +356,10 @@ void mips::buildArchitecture(void)
 	reg_exe_mem1->MemOut(MemOut);
 	reg_exe_mem1->MemOut_fwd_exemem1(MemOut_fwd_exemem1);
 
+	reg_exe_mem1->rt_exe(rt_exe);
+	reg_exe_mem1->rt_mem1(rt_mem1);
+	reg_exe_mem1->Branch_exe(Branch_exe);
+	reg_exe_mem1->Branch_mem1(Branch_mem1);
 	reg_exe_mem1->aluOut_exe(ALUOut);
 	reg_exe_mem1->aluOut_mem1(ALUOut_mem1);
 	reg_exe_mem1->MemRead_exe(MemRead_exe);
@@ -432,8 +438,11 @@ void mips::buildArchitecture(void)
     forward_unit->rt(rt);
     forward_unit->rs_exe(rs_exe);
     forward_unit->rt_exe(rt_exe);
+    forward_unit->rt_mem1(rt_mem1);
 
     forward_unit->Branch(Branch);
+    forward_unit->Branch_exe(Branch_exe);
+    forward_unit->Branch_mem1(Branch_mem1);
     forward_unit->RegWrite_exe(RegWrite_exe);
     forward_unit->RegWrite_mem1(RegWrite_mem1);
     forward_unit->RegWrite_mem2(RegWrite_mem2);

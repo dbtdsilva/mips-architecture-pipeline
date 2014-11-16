@@ -87,6 +87,38 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
     pcStage.push_back(new PortValRead(mips1.reg_mem2_wb->PC_wb,"PC_wb"));
     validpcStage.push_back(new PortValRead(mips1.reg_mem2_wb->valid_wb,"valid_PC_wb"));
 
+
+    /* Debug */
+    portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rs0, "rs0_id");
+    portVal->move(10,16);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
+    portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rs1, "rs1_id");
+    portVal->move(10,26);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
+    portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rsActive, "rs1_id_active");
+    portVal->move(10,36);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
+    portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rt0, "rt0_id");
+    portVal->move(10,46);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
+    portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rt1, "rt1_id");
+    portVal->move(10,56);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
+    portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rtActive, "rt1_id_active");
+    portVal->move(10,66);
+    portVal->setColor(QColor("blue"));
+    portValVec.push_back(portVal);
+
     // value of port signals
     // IF
     portVal=new PortValItem(this,mips1.instmem->addr, "PC");
@@ -243,12 +275,12 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
     portVal->setColor(QColor("blue"));
     portValVec.push_back(portVal);
 
-    portVal=new PortValItem(this,mips1.rfile->data1, "r1_out");
+    portVal=new PortValItem(this,mips1.rsActive_id->dout, "r1_out");
     portVal->move(372,250);
     portVal->setColor(QColor("red"));
     portValVec.push_back(portVal);
 
-    portVal=new PortValItem(this,mips1.rfile->data2, "r2_out");
+    portVal=new PortValItem(this,mips1.rtActive_id->dout, "r2_out");
     portVal->move(372,292);
     portVal->setColor(QColor("red"));
     portValVec.push_back(portVal);

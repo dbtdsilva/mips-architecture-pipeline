@@ -7,8 +7,8 @@ SC_MODULE( forward )
 {
   public:
     sc_in <sc_uint<5> > WriteReg_exe, WriteReg_mem1, WriteReg_mem2, WriteReg_wb;
-    sc_in <sc_uint<5> > rs, rt, rs_exe, rt_exe;
-    sc_in <bool> Branch;
+    sc_in <sc_uint<5> > rs, rt, rs_exe, rt_exe, rt_mem1;
+    sc_in <bool> Branch, Branch_exe, Branch_mem1;
     // Control signals
     sc_in<bool> RegWrite_exe, RegWrite_mem1, RegWrite_mem2, RegWrite_wb, MemRead_exe,
                 MemRead_mem1, MemRead_mem2, MemRead_wb, MemRead, MemWrite_exe, MemWrite_mem1;
@@ -23,8 +23,8 @@ SC_MODULE( forward )
     {
         SC_METHOD(detect_forward);
         sensitive << WriteReg_exe << WriteReg_mem1 << WriteReg_mem2 << WriteReg_wb
-                  << rs << rt << rs_exe << rt_exe
-                  << Branch
+                  << rs << rt << rs_exe << rt_exe << rt_mem1
+                  << Branch << Branch_exe << Branch_mem1
                   << RegWrite_exe << RegWrite_mem1 << RegWrite_mem2 << RegWrite_wb
                   << MemRead_exe << MemRead_mem1 << MemRead_mem2 << MemRead_wb << MemRead
                   << MemWrite_exe << MemWrite_mem1;
