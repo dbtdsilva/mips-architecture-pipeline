@@ -106,10 +106,10 @@ SC_MODULE(mips) {
    sc_signal <bool> forward_idexe_rs0, forward_idexe_rs1, forward_idexe_rt0, forward_idexe_rt1, forward_idexe_rtActive, forward_idexe_rsActive,
                               forward_exemem1_regb0, forward_exemem1_regb1;
 
-   sc_signal <bool> forward_exe_rs0, forward_exe_rs1, forward_exe_rt0, forward_exe_rt1, forward_exe_rtActive, forward_exe_rsActive,
-                              forward_mem1_regb0, forward_mem1_regb1;
+   //sc_signal <bool> forward_exe_rs0, forward_exe_rs1, forward_exe_rt0, forward_exe_rt1, forward_exe_rtActive, forward_exe_rsActive,
+   //                           forward_mem1_regb0, forward_mem1_regb1;
    sc_signal <bool> forward_ifid_rs0, forward_ifid_rs1, forward_ifid_rt0, forward_ifid_rt1, forward_ifid_rtActive, forward_ifid_rsActive;
-   sc_signal <bool> forward_id_rs0, forward_id_rs1, forward_id_rt0, forward_id_rt1, forward_id_rtActive, forward_id_rsActive;
+   //sc_signal <bool> forward_id_rs0, forward_id_rs1, forward_id_rt0, forward_id_rt1, forward_id_rtActive, forward_id_rsActive;
 
    sc_signal <sc_uint<32> > ValRS_fwd_idexe, ValRT_fwd_idexe, ResultRS_fwd_exe, ResultRT_fwd_exe;
    sc_signal <sc_uint<32> > ResultRDD_fwd_mem1, ValRT_fwd_ifid, ValRS_fwd_ifid, ResultRT_fwd_id, ResultRS_fwd_id;
@@ -203,7 +203,7 @@ SC_MODULE(mips) {
    sc_signal < sc_uint<32> > ALUOut_mem2;
    sc_signal < sc_uint<32> > MemOut;   // data memory output
    sc_signal < sc_uint<5> > WriteReg_mem2;
-   sc_signal <bool> RegWrite_mem2, MemtoReg_mem2, MemRead_mem2;
+   sc_signal <bool> RegWrite_mem2, MemtoReg_mem2, MemRead_mem2, MemRead_wb;
    // the following two signals are not used by the architecture
    // they are used only for visualization purposes
    sc_signal < sc_uint<32> > PC_mem2;

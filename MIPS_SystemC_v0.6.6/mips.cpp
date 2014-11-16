@@ -67,8 +67,8 @@ void mips::buildID(void)
 	rfile->reset(reset);
 
 	rsFwd_id = new mux4< sc_uint<32> >("rsFwd_id");
-	rsFwd_id->sel0(forward_id_rs0);
-	rsFwd_id->sel1(forward_id_rs1);
+	rsFwd_id->sel0(forward_ifid_rs0);
+	rsFwd_id->sel1(forward_ifid_rs1);
 	rsFwd_id->din0(AluOut_fwd_ifid);
 	rsFwd_id->din1(AluOut_mem1_fwd_ifid);
 	rsFwd_id->din2(AluOut_mem2_fwd_ifid);
@@ -76,14 +76,14 @@ void mips::buildID(void)
 	rsFwd_id->dout(ValRS_fwd_ifid);
 
 	rsActive_id = new mux< sc_uint<32> >("rsActive_id");
-	rsActive_id->sel(forward_id_rsActive);
+	rsActive_id->sel(forward_ifid_rsActive);
 	rsActive_id->din0(regdata1_mux);
 	rsActive_id->din1(ValRS_fwd_ifid);
 	rsActive_id->dout(ResultRS_fwd_id);
 
 	rtFwd_id = new mux4< sc_uint<32> >("rtFwd_id");
-	rtFwd_id->sel0(forward_id_rt0);
-	rtFwd_id->sel1(forward_id_rt1);
+	rtFwd_id->sel0(forward_ifid_rt0);
+	rtFwd_id->sel1(forward_ifid_rt1);
 	rtFwd_id->din0(AluOut_fwd_ifid);
 	rtFwd_id->din1(AluOut_mem1_fwd_ifid);
 	rtFwd_id->din2(AluOut_mem2_fwd_ifid);
@@ -91,7 +91,7 @@ void mips::buildID(void)
 	rtFwd_id->dout(ValRT_fwd_ifid);
 
 	rtActive_id = new mux< sc_uint<32> >("rtActive_id");
-	rtActive_id->sel(forward_id_rtActive);
+	rtActive_id->sel(forward_ifid_rtActive);
 	rtActive_id->din0(regdata2_mux);
 	rtActive_id->din1(ValRT_fwd_ifid);
 	rtActive_id->dout(ResultRT_fwd_id);
@@ -169,8 +169,8 @@ void mips::buildID(void)
 void mips::buildEXE(void)
 {
 	rsFwd_exe = new mux4< sc_uint<32> >("rsFwd_exe");
-	rsFwd_exe->sel0(forward_exe_rs0);
-	rsFwd_exe->sel1(forward_exe_rs1);
+	rsFwd_exe->sel0(forward_idexe_rs0);
+	rsFwd_exe->sel1(forward_idexe_rs1);
 	rsFwd_exe->din0(AluOut_fwd_idexe);
 	rsFwd_exe->din1(AluOut_mem1_fwd_idexe);
 	rsFwd_exe->din2(AluOut_mem2_fwd_idexe);
@@ -178,14 +178,14 @@ void mips::buildEXE(void)
 	rsFwd_exe->dout(ValRS_fwd_idexe);
 
 	rsActive_exe = new mux< sc_uint<32> >("rsActive_exe");
-	rsActive_exe->sel(forward_exe_rsActive);
+	rsActive_exe->sel(forward_idexe_rsActive);
 	rsActive_exe->din0(rega_exe);
 	rsActive_exe->din1(ValRS_fwd_idexe);
 	rsActive_exe->dout(ResultRS_fwd_exe);
 
 	rtFwd_exe = new mux4< sc_uint<32> >("rtFwd_exe");
-	rtFwd_exe->sel0(forward_exe_rt0);
-	rtFwd_exe->sel1(forward_exe_rt1);
+	rtFwd_exe->sel0(forward_idexe_rt0);
+	rtFwd_exe->sel1(forward_idexe_rt1);
 	rtFwd_exe->din0(AluOut_fwd_idexe);
 	rtFwd_exe->din1(AluOut_mem1_fwd_idexe);
 	rtFwd_exe->din2(AluOut_mem2_fwd_idexe);
@@ -193,7 +193,7 @@ void mips::buildEXE(void)
 	rtFwd_exe->dout(ValRT_fwd_idexe);
 
 	rtActive_exe = new mux< sc_uint<32> >("rtActive_exe");
-	rtActive_exe->sel(forward_exe_rtActive);
+	rtActive_exe->sel(forward_idexe_rtActive);
 	rtActive_exe->din0(regb_exe);
 	rtActive_exe->din1(ValRT_fwd_idexe);
 	rtActive_exe->dout(ResultRT_fwd_exe);
@@ -219,8 +219,8 @@ void mips::buildEXE(void)
 void mips::buildMEM1(void)
 {
 	rddFwd_mem1 = new mux4<sc_uint<32> >("rddFwd_mem1");
-	rddFwd_mem1->sel0(forward_mem1_regb0);
-	rddFwd_mem1->sel1(forward_mem1_regb1);
+	rddFwd_mem1->sel0(forward_exemem1_regb0);
+	rddFwd_mem1->sel1(forward_exemem1_regb1);
 	rddFwd_mem1->din0(regb_mem1);
 	rddFwd_mem1->din1(MemOut);
 	rddFwd_mem1->din2(WriteVal);
@@ -279,18 +279,6 @@ void mips::buildArchitecture(void)
 	reg_if_id->AluOut_mem2_fwd_ifid(AluOut_mem2_fwd_ifid);
 	reg_if_id->MemOut(MemOut);
 	reg_if_id->MemOut_fwd_ifid(MemOut_fwd_ifid);
-	reg_if_id->forward_ifid_rs0(forward_ifid_rs0);
-	reg_if_id->forward_id_rs0(forward_id_rs0);
-	reg_if_id->forward_ifid_rs1(forward_ifid_rs1);
-	reg_if_id->forward_id_rs1(forward_id_rs1);
-	reg_if_id->forward_ifid_rt0(forward_ifid_rt0);
-	reg_if_id->forward_id_rt0(forward_id_rt0);
-	reg_if_id->forward_ifid_rt1(forward_ifid_rt1);
-	reg_if_id->forward_id_rt1(forward_id_rt1);
-	reg_if_id->forward_ifid_rsActive(forward_ifid_rsActive);
-	reg_if_id->forward_id_rsActive(forward_id_rsActive);
-	reg_if_id->forward_ifid_rtActive(forward_ifid_rtActive);
-	reg_if_id->forward_id_rtActive(forward_id_rtActive);
 
 	reg_if_id->PC4_if(PC4);
 	reg_if_id->PC4_id(PC4_id);
@@ -327,18 +315,6 @@ void mips::buildArchitecture(void)
 	reg_id_exe->AluOut_mem2_fwd_idexe(AluOut_mem2_fwd_idexe);
 	reg_id_exe->MemOut(MemOut);
 	reg_id_exe->MemOut_fwd_idexe(MemOut_fwd_idexe);
-	reg_id_exe->forward_idexe_rs0(forward_idexe_rs0);
-	reg_id_exe->forward_exe_rs0(forward_exe_rs0);
-	reg_id_exe->forward_idexe_rs1(forward_idexe_rs1);
-	reg_id_exe->forward_exe_rs1(forward_exe_rs1);
-	reg_id_exe->forward_idexe_rt0(forward_idexe_rt0);
-	reg_id_exe->forward_exe_rt0(forward_exe_rt0);
-	reg_id_exe->forward_idexe_rt1(forward_idexe_rt1);
-	reg_id_exe->forward_exe_rt1(forward_exe_rt1);
-	reg_id_exe->forward_idexe_rsActive(forward_idexe_rsActive);
-	reg_id_exe->forward_exe_rsActive(forward_exe_rsActive);
-	reg_id_exe->forward_idexe_rtActive(forward_idexe_rtActive);
-	reg_id_exe->forward_exe_rtActive(forward_exe_rtActive);
 
 	reg_id_exe->imm_id(imm_ext);
 	reg_id_exe->imm_exe(imm_exe);
@@ -377,10 +353,6 @@ void mips::buildArchitecture(void)
 	reg_exe_mem1->WriteVal_fwd_exemem1(WriteVal_fwd_exemem1);
 	reg_exe_mem1->MemOut(MemOut);
 	reg_exe_mem1->MemOut_fwd_exemem1(MemOut_fwd_exemem1);
-	reg_exe_mem1->forward_exemem1_sel0(forward_exemem1_regb0);
-	reg_exe_mem1->forward_exemem1_sel1(forward_exemem1_regb1);
-	reg_exe_mem1->forward_mem1_sel0(forward_mem1_regb0);
-	reg_exe_mem1->forward_mem1_sel1(forward_mem1_regb1);
 
 	reg_exe_mem1->aluOut_exe(ALUOut);
 	reg_exe_mem1->aluOut_mem1(ALUOut_mem1);
@@ -433,6 +405,8 @@ void mips::buildArchitecture(void)
 	reg_mem2_wb->aluOut_wb(ALUOut_wb);
 	reg_mem2_wb->memOut_mem2(MemOut);
 	reg_mem2_wb->memOut_wb(MemOut_wb);
+	reg_mem2_wb->MemRead_mem2(MemRead_mem2);
+	reg_mem2_wb->MemRead_wb(MemRead_wb);
 	reg_mem2_wb->MemtoReg_mem2(MemtoReg_mem2);
 	reg_mem2_wb->MemtoReg_wb(MemtoReg_wb);
 	reg_mem2_wb->RegWrite_mem2(RegWrite_mem2);
@@ -467,9 +441,10 @@ void mips::buildArchitecture(void)
     forward_unit->MemRead_exe(MemRead_exe);
     forward_unit->MemRead_mem1(MemRead_mem1);
     forward_unit->MemRead_mem2(MemRead_mem2);
+    forward_unit->MemRead_wb(MemRead_wb);
     forward_unit->MemRead(MemRead);
     forward_unit->MemWrite_exe(MemWrite_exe);
-    //forward_unit->MemWrite(MemWrite);
+    forward_unit->MemWrite_mem1(MemWrite_mem1);
 
     forward_unit->forward_idexe_rs0(forward_idexe_rs0);
     forward_unit->forward_idexe_rs1(forward_idexe_rs1);

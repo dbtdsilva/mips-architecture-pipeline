@@ -29,8 +29,8 @@ SC_MODULE(reg_mem2_wb_t) {
 	sc_in  < sc_uint<5> > WriteReg_mem2;
 	sc_out < sc_uint<5> > WriteReg_wb;
 
-	sc_in  < bool > MemtoReg_mem2, RegWrite_mem2;
-	sc_out < bool > MemtoReg_wb, RegWrite_wb;
+	sc_in  < bool > MemtoReg_mem2, RegWrite_mem2, MemRead_mem2;
+	sc_out < bool > MemtoReg_wb, RegWrite_wb, MemRead_wb;
 
 	sc_in  < sc_uint<32> > PC_mem2;   // only for visualization purposes
 	sc_out < sc_uint<32> > PC_wb;    // only for visualization purposes
@@ -41,7 +41,7 @@ SC_MODULE(reg_mem2_wb_t) {
 
 	regT < sc_uint<32> > *aluOut, *memOut;
 	regT < sc_uint<5> > *WriteReg;
-	regT < bool > *MemtoReg, *RegWrite;
+	regT < bool > *MemtoReg, *RegWrite, *MemRead;
 
 	regT < sc_uint<32> > *PC;        // only for visualization purposes
 	regT < bool > *valid;            // only for visualization purposes
@@ -82,6 +82,13 @@ SC_MODULE(reg_mem2_wb_t) {
 		RegWrite->clk(clk);
 		RegWrite->enable(enable);
 		RegWrite->reset(reset);
+
+		MemRead = new regT < bool >("MemRead");
+		MemRead->din(MemRead_mem2);
+		MemRead->dout(MemRead_wb);
+		MemRead->clk(clk);
+		MemRead->enable(enable);
+		MemRead->reset(reset);
 
 		PC = new regT < sc_uint<32> > ("PC");;
 		PC->din(PC_mem2);

@@ -45,13 +45,10 @@ SC_MODULE(reg_id_exe_t) {
 
 	sc_in < sc_uint<32> > AluOut, AluOut_mem1, AluOut_mem2, MemOut;
 	sc_out < sc_uint<32> > AluOut_fwd_idexe, AluOut_mem1_fwd_idexe, AluOut_mem2_fwd_idexe, MemOut_fwd_idexe;
-	sc_in <bool> forward_idexe_rs0, forward_idexe_rs1, forward_idexe_rt0, forward_idexe_rt1, forward_idexe_rtActive, forward_idexe_rsActive;
-	sc_out <bool> forward_exe_rs0, forward_exe_rs1, forward_exe_rt0, forward_exe_rt1, forward_exe_rtActive, forward_exe_rsActive;
 	// Modules
 
 	regT < sc_uint<32> > *rega,*regb,*imm;//*PC4;
 
-	regT < bool > *forward_rs0, *forward_rs1, *forward_rt0, *forward_rt1, *forward_rsActive, *forward_rtActive;
 	regT < sc_uint<32> > *alu_mem1, *alu_mem2, *alu, *memout;
 
 	regT < bool > *MemRead, *MemWrite, *MemtoReg, *RegWrite, *ALUSrc; //*Branch,
@@ -83,48 +80,6 @@ SC_MODULE(reg_id_exe_t) {
 		rtReg->clk(clk);
 		rtReg->enable(enable);
 		rtReg->reset(reset);
-
-		forward_rs0 = new regT < bool >("forward_rs0");
-		forward_rs0->din(forward_idexe_rs0);
-		forward_rs0->dout(forward_exe_rs0);
-		forward_rs0->clk(clk);
-		forward_rs0->enable(enable);
-		forward_rs0->reset(reset);
-
-		forward_rs1 = new regT < bool >("forward_rs1");
-		forward_rs1->din(forward_idexe_rs1);
-		forward_rs1->dout(forward_exe_rs1);
-		forward_rs1->clk(clk);
-		forward_rs1->enable(enable);
-		forward_rs1->reset(reset);
-
-		forward_rt0 = new regT < bool >("forward_rt0");
-		forward_rt0->din(forward_idexe_rt0);
-		forward_rt0->dout(forward_exe_rt0);
-		forward_rt0->clk(clk);
-		forward_rt0->enable(enable);
-		forward_rt0->reset(reset);
-
-		forward_rt1 = new regT < bool >("forward_rt1");
-		forward_rt1->din(forward_idexe_rt1);
-		forward_rt1->dout(forward_exe_rt1);
-		forward_rt1->clk(clk);
-		forward_rt1->enable(enable);
-		forward_rt1->reset(reset);
-
-		forward_rsActive = new regT < bool >("forward_rsActive");
-		forward_rsActive->din(forward_idexe_rsActive);
-		forward_rsActive->dout(forward_exe_rsActive);
-		forward_rsActive->clk(clk);
-		forward_rsActive->enable(enable);
-		forward_rsActive->reset(reset);
-
-		forward_rtActive = new regT < bool >("forward_rtActive");
-		forward_rtActive->din(forward_idexe_rtActive);
-		forward_rtActive->dout(forward_exe_rtActive);
-		forward_rtActive->clk(clk);
-		forward_rtActive->enable(enable);
-		forward_rtActive->reset(reset);
 
 		alu = new regT <sc_uint<32> > ("alu");
 		alu->din(AluOut);

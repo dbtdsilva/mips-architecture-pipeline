@@ -42,12 +42,9 @@ SC_MODULE(reg_exe_mem1_t) {
 
 	sc_in < sc_uint<32> > MemOut, WriteVal;
 	sc_out < sc_uint<32> > MemOut_fwd_exemem1, WriteVal_fwd_exemem1;
-	sc_in <bool> forward_exemem1_sel0, forward_exemem1_sel1;
-	sc_out <bool> forward_mem1_sel0, forward_mem1_sel1;
 	// Modules
 
 	regT < sc_uint<32> > *writeval, *memout;
-	regT < bool > *forward_sel0, *forward_sel1;
 	regT < sc_uint<32> > *aluOut, *regb, *BranchTarget;
 	regT < sc_uint<5> >  *WriteReg;
 	regT < bool > *MemRead, *MemWrite, *MemtoReg, *RegWrite; //*Branch, *Zero, ;
@@ -77,20 +74,6 @@ SC_MODULE(reg_exe_mem1_t) {
 		writeval->clk(clk);
 		writeval->enable(enable);
 		writeval->reset(reset);
-
-		forward_sel0 = new regT <bool>("forward_sel0");
-		forward_sel0->din(forward_exemem1_sel0);
-		forward_sel0->dout(forward_mem1_sel0);
-		forward_sel0->clk(clk);
-		forward_sel0->enable(enable);
-		forward_sel0->reset(reset);
-
-		forward_sel1 = new regT <bool>("forward_sel1");
-		forward_sel1->din(forward_exemem1_sel1);
-		forward_sel1->dout(forward_mem1_sel1);
-		forward_sel1->clk(clk);
-		forward_sel1->enable(enable);
-		forward_sel1->reset(reset);
 
 		regb = new regT < sc_uint<32> > ("regb");
 		regb->din(regb_exe);
