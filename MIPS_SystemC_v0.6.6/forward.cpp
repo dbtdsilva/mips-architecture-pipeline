@@ -19,40 +19,29 @@ void forward::detect_forward()
 
     forward_ifid_rs0.write(0);
     forward_ifid_rs1.write(0);
-    forward_ifid_rsActive.write(0);
     if (Branch.read() || JumpOnRegister.read()) {
-
-        forward_ifid_rsActive.write(1);
         if (rs.read() != 0 && rs.read() == WriteReg_mem1.read() && !MemRead_mem1.read() && RegWrite_mem1.read()) {
             printf("EXE -> IF/ID (RS) (AluOut)\n");
-            forward_ifid_rs0.write(0);
+            forward_ifid_rs0.write(1);
             forward_ifid_rs1.write(0);
         } else if (rs.read() != 0 && rs.read() == WriteReg_mem2.read() && !MemRead_mem2.read() && RegWrite_mem2.read()) {
             printf("MEM1 -> IF/ID (RS) (AluOut)\n");
-            forward_ifid_rs0.write(1);
-            forward_ifid_rs1.write(0);
-        } else {
-            printf("NO FORWARD TO IF/ID RS\n");
-            forward_ifid_rsActive.write(0);
+            forward_ifid_rs0.write(0);
+            forward_ifid_rs1.write(1);
         }
     }
 
     forward_ifid_rt0.write(0);
     forward_ifid_rt1.write(0);
-    forward_ifid_rtActive.write(0);
     if (Branch.read()) {
-        forward_ifid_rtActive.write(1);
         if (rt.read() != 0 && rt.read() == WriteReg_mem1.read() && !MemRead_mem1.read() && RegWrite_mem1.read()) {
             printf("EXE -> IF/ID (RT) (AluOut)\n");
-            forward_ifid_rt0.write(0);
+            forward_ifid_rt0.write(1);
             forward_ifid_rt1.write(0);
         } else if (rt.read() != 0 && rt.read() == WriteReg_mem2.read() && !MemRead_mem2.read() && RegWrite_mem2.read()) {
             printf("MEM1 -> IF/ID (RT) (AluOut)\n");
-            forward_ifid_rt0.write(1);
-            forward_ifid_rt1.write(0);
-        } else {
-            printf("NO FORWARD TO IF/ID RT\n");
-            forward_ifid_rtActive.write(0);
+            forward_ifid_rt0.write(0);
+            forward_ifid_rt1.write(1);
         }
     }
 

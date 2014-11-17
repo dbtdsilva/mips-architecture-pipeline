@@ -30,13 +30,13 @@ SC_MODULE(reg_if_id_t) {
 	sc_in  < bool >        valid_if;  // only for visualization purposes
 	sc_out < sc_uint<32> > PC_id;     // only for visualization purposes
 	sc_out < bool >        valid_id;  // only for visualization purposes
-	sc_in < sc_uint<32> > AluOut, AluOut_mem1, AluOut_mem2, MemOut;
-	sc_out < sc_uint<32> > AluOut_fwd_ifid, AluOut_mem1_fwd_ifid, AluOut_mem2_fwd_ifid, MemOut_fwd_ifid;
+	sc_in < sc_uint<32> > AluOut, AluOut_mem1;
+	sc_out < sc_uint<32> > AluOut_fwd_ifid, AluOut_mem1_fwd_ifid;
 	// Modules
 
 	regT < sc_uint<32> > *inst, *PC4;
 
-	regT < sc_uint<32> > *alu_mem1, *alu_mem2, *alu, *memout;
+	regT < sc_uint<32> > *alu_mem1, *alu;
 	regT < sc_uint<32> > *PC;        // only for visualization purposes
 	regT < bool > *valid;            // only for visualization purposes
 
@@ -62,20 +62,6 @@ SC_MODULE(reg_if_id_t) {
 		alu_mem1->clk(clk);
 		alu_mem1->enable(enable);
 		alu_mem1->reset(reset);
-
-		alu_mem2 = new regT <sc_uint<32> > ("alu_mem2");
-		alu_mem2->din(AluOut_mem2);
-		alu_mem2->dout(AluOut_mem2_fwd_ifid);
-		alu_mem2->clk(clk);
-		alu_mem2->enable(enable);
-		alu_mem2->reset(reset);
-
-		memout = new regT <sc_uint<32> > ("memout");
-		memout->din(MemOut);
-		memout->dout(MemOut_fwd_ifid);
-		memout->clk(clk);
-		memout->enable(enable);
-		memout->reset(reset);
 
 		PC4 = new regT < sc_uint<32> > ("PC4");
 		PC4->din(PC4_if);

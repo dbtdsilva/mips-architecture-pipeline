@@ -99,11 +99,6 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
     portVal->setColor(QColor("blue"));
     portValVec.push_back(portVal);
 
-    portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rsActive, "rs1_id_active");
-    portVal->move(10,36);
-    portVal->setColor(QColor("blue"));
-    portValVec.push_back(portVal);
-
     portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rt0, "rt0_id");
     portVal->move(10,46);
     portVal->setColor(QColor("blue"));
@@ -111,11 +106,6 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
 
     portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rt1, "rt1_id");
     portVal->move(10,56);
-    portVal->setColor(QColor("blue"));
-    portValVec.push_back(portVal);
-
-    portVal=new PortValItem(this,mips1.forward_unit->forward_ifid_rtActive, "rt1_id_active");
-    portVal->move(10,66);
     portVal->setColor(QColor("blue"));
     portValVec.push_back(portVal);
 
@@ -275,12 +265,12 @@ MIPSarchCanvas::MIPSarchCanvas(mips &m, QObject *parent) : Q3Canvas(parent), mip
     portVal->setColor(QColor("blue"));
     portValVec.push_back(portVal);
 
-    portVal=new PortValItem(this,mips1.rsActive_id->dout, "r1_out");
+    portVal=new PortValItem(this,mips1.rsFwd_id->dout, "r1_out");
     portVal->move(372,250);
     portVal->setColor(QColor("red"));
     portValVec.push_back(portVal);
 
-    portVal=new PortValItem(this,mips1.rtActive_id->dout, "r2_out");
+    portVal=new PortValItem(this,mips1.rtFwd_id->dout, "r2_out");
     portVal->move(372,292);
     portVal->setColor(QColor("red"));
     portValVec.push_back(portVal);

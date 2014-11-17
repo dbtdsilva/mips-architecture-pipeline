@@ -16,7 +16,6 @@ SC_MODULE( forward )
     sc_out<bool> forward_idexe_rs0, forward_idexe_rs1, forward_idexe_rt0, forward_idexe_rt1;
     sc_out<bool> forward_idexe_rtActive, forward_idexe_rsActive;
     sc_out<bool> forward_ifid_rs0, forward_ifid_rs1, forward_ifid_rt0, forward_ifid_rt1;
-    sc_out<bool> forward_ifid_rtActive, forward_ifid_rsActive;
     sc_out<bool> forward_exemem1_regb0, forward_exemem1_regb1;
 
     SC_CTOR(forward)

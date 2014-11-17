@@ -69,32 +69,21 @@ void mips::buildID(void)
 	rsFwd_id = new mux4< sc_uint<32> >("rsFwd_id");
 	rsFwd_id->sel0(forward_ifid_rs0);
 	rsFwd_id->sel1(forward_ifid_rs1);
-	rsFwd_id->din0(AluOut_fwd_ifid);
-	rsFwd_id->din1(AluOut_mem1_fwd_ifid);
-	rsFwd_id->din2(AluOut_mem2_fwd_ifid);
-	rsFwd_id->din3(MemOut_fwd_ifid);
-	rsFwd_id->dout(ValRS_fwd_ifid);
-
-	rsActive_id = new mux< sc_uint<32> >("rsActive_id");
-	rsActive_id->sel(forward_ifid_rsActive);
-	rsActive_id->din0(regdata1_mux);
-	rsActive_id->din1(ValRS_fwd_ifid);
-	rsActive_id->dout(ResultRS_fwd_id);
+	rsFwd_id->din0(regdata1_mux);
+	rsFwd_id->din1(AluOut_fwd_ifid);
+	rsFwd_id->din2(AluOut_mem1_fwd_ifid);
+	rsFwd_id->din3(AluOut_mem1_fwd_ifid);
+	rsFwd_id->dout(ResultRS_fwd_id);
 
 	rtFwd_id = new mux4< sc_uint<32> >("rtFwd_id");
 	rtFwd_id->sel0(forward_ifid_rt0);
 	rtFwd_id->sel1(forward_ifid_rt1);
-	rtFwd_id->din0(AluOut_fwd_ifid);
-	rtFwd_id->din1(AluOut_mem1_fwd_ifid);
-	rtFwd_id->din2(AluOut_mem2_fwd_ifid);
-	rtFwd_id->din3(MemOut_fwd_ifid);
-	rtFwd_id->dout(ValRT_fwd_ifid);
+	rtFwd_id->din0(regdata2_mux);
+	rtFwd_id->din1(AluOut_fwd_ifid);
+	rtFwd_id->din2(AluOut_mem1_fwd_ifid);
+	rtFwd_id->din3(AluOut_mem1_fwd_ifid);
+	rtFwd_id->dout(ResultRT_fwd_id);
 
-	rtActive_id = new mux< sc_uint<32> >("rtActive_id");
-	rtActive_id->sel(forward_ifid_rtActive);
-	rtActive_id->din0(regdata2_mux);
-	rtActive_id->din1(ValRT_fwd_ifid);
-	rtActive_id->dout(ResultRT_fwd_id);
 	// 16 to 32 bit signed Immediate extension
 	e1 = new ext("ext");
 	e1->din(imm);
@@ -275,10 +264,6 @@ void mips::buildArchitecture(void)
 	reg_if_id->AluOut_fwd_ifid(AluOut_fwd_ifid);
 	reg_if_id->AluOut_mem1(ALUOut_mem1);
 	reg_if_id->AluOut_mem1_fwd_ifid(AluOut_mem1_fwd_ifid);
-	reg_if_id->AluOut_mem2(ALUOut_mem2);
-	reg_if_id->AluOut_mem2_fwd_ifid(AluOut_mem2_fwd_ifid);
-	reg_if_id->MemOut(MemOut);
-	reg_if_id->MemOut_fwd_ifid(MemOut_fwd_ifid);
 
 	reg_if_id->PC4_if(PC4);
 	reg_if_id->PC4_id(PC4_id);
@@ -472,8 +457,6 @@ void mips::buildArchitecture(void)
     forward_unit->forward_ifid_rs1(forward_ifid_rs1);
     forward_unit->forward_ifid_rt0(forward_ifid_rt0);
     forward_unit->forward_ifid_rt1(forward_ifid_rt1);
-    forward_unit->forward_ifid_rsActive(forward_ifid_rsActive);
-    forward_unit->forward_ifid_rtActive(forward_ifid_rtActive);
     forward_unit->forward_exemem1_regb0(forward_exemem1_regb0);
     forward_unit->forward_exemem1_regb1(forward_exemem1_regb1);
 
@@ -499,8 +482,6 @@ void mips::buildArchitecture(void)
 mips::~mips(void)
 {
 	delete rtActive_exe;
-	delete rsActive_id;
-	delete rtActive_id;
 	delete rtFwd_exe;
 	delete rsFwd_exe;
 	delete rsFwd_id;
