@@ -12,7 +12,9 @@ void hazard::detect_hazard()
 
 
     // STALL MEM1 / BUBBLE ON MEM2
-    if (true) {
+    if (rt_mem1.read() != 0 && rt_mem1.read() == WriteReg_mem2.read()
+			&& MemRead_mem2.read() && MemWrite_mem1.read() && RegWrite_mem2.read()) {
+	printf("STALL MEM1\n");
 	enable_pc.write(false);
         enable_ifid.write(false);
         reset_ifid.write(false);
@@ -23,7 +25,11 @@ void hazard::detect_hazard()
         reset_mem1mem2.write(true);
     }
     // STALL EXE / BUBBLE ON MEM1
-    else if (true) {
+    else if (  (rs_exe.read() != 0 && rs_exe.read() == WriteReg_mem1.read() && MemRead_mem1.read() && RegWrite_mem1.read())
+		|| (rt_exe.read() != 0 && rt_exe.read() == WriteReg_mem1.read() && MemRead_mem1.read() && RegWrite_mem1.read())
+		|| (rs_exe.read() != 0 && rs_exe.read() == WriteReg_mem2.read() && MemRead_mem2.read() && RegWrite_mem2.read())
+		|| (rt_exe.read() != 0 && rt_exe.read() == WriteReg_mem2.read() && MemRead_mem2.read() && RegWrite_mem2.read())) {
+	printf("STALL EXE\n");
 	enable_pc.write(false);
         enable_ifid.write(false);
         reset_ifid.write(false);
@@ -39,6 +45,7 @@ void hazard::detect_hazard()
             || (rs.read() != 0 && rs.read() == WriteReg_mem1.read() && MemRead_mem1.read() && RegWrite_mem1.read() && Branch.read())
             || (rs.read() != 0 && rs.read() == WriteReg_mem2.read() && MemRead_mem2.read() && RegWrite_mem2.read() && Branch.read()))
     {
+	printf("STALL ID\n");
         enable_pc.write(false);
         enable_ifid.write(false);
         reset_ifid.write(false);
@@ -50,6 +57,7 @@ void hazard::detect_hazard()
     }
     else if (BranchTaken.read() || Jump.read())
     {	// Discards instruction going to IF/ID
+	printf("Discarding..\n");
         enable_pc.write(true);
         enable_ifid.write(true);
         reset_idexe.write(false);

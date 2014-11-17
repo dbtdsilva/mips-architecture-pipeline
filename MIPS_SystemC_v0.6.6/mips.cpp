@@ -472,7 +472,10 @@ void mips::buildArchitecture(void)
 
 	hazard_unit = new hazard("hazard_unit");
 	hazard_unit->rs(rs);
+	hazard_unit->rs_exe(rs_exe);
 	hazard_unit->rt(rt);
+	hazard_unit->rt_exe(rt_exe);
+	hazard_unit->rt_mem1(rt_mem1);
 	hazard_unit->Branch(Branch);
 	hazard_unit->BranchTaken(BranchTaken);
 	hazard_unit->Jump(Jump);
@@ -485,6 +488,7 @@ void mips::buildArchitecture(void)
 	hazard_unit->RegWrite_mem2(RegWrite_mem2);
 	hazard_unit->MemRead_mem1(MemRead_mem1);
 	hazard_unit->MemRead_mem2(MemRead_mem2);
+	hazard_unit->MemWrite_mem1(MemWrite_mem1);
 
 	hazard_unit->enable_pc(enable_pc);
 	hazard_unit->enable_ifid(enable_ifid);
