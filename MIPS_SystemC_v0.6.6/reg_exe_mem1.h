@@ -52,7 +52,9 @@ SC_MODULE(reg_exe_mem1_t) {
 	regT < sc_uint<32> > *PC;        // only for visualization purposes
 	regT < bool > *valid;            // only for visualization purposes
 
+	sc_signal < bool > flag;
 	SC_CTOR(reg_exe_mem1_t) {
+		flag = true;
 
 		aluOut = new regT < sc_uint<32> > ("aluOut");
 		aluOut->din(aluOut_exe);
@@ -65,14 +67,14 @@ SC_MODULE(reg_exe_mem1_t) {
 		memout->din(MemOut);
 		memout->dout(MemOut_fwd_exemem1);
 		memout->clk(clk);
-		memout->enable(enable);
+		memout->enable(flag);
 		memout->reset(reset);
 
 		writeval = new regT <sc_uint<32> > ("writeval");
 		writeval->din(WriteVal);
 		writeval->dout(WriteVal_fwd_exemem1);
 		writeval->clk(clk);
-		writeval->enable(enable);
+		writeval->enable(flag);
 		writeval->reset(reset);
 
 		regb = new regT < sc_uint<32> > ("regb");

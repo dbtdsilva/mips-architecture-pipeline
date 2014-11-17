@@ -73,6 +73,8 @@ SC_MODULE(mips) {
    xorgate *xor1;
    orgate *or_reset_idexe;
    orgate *or_reset_ifid;
+   orgate *or_reset_exemem1;
+   orgate *or_reset_mem1mem2;
    hazard *hazard_unit;
    jaddrdecode *jAddrDecode;
    //EXE
@@ -117,6 +119,9 @@ SC_MODULE(mips) {
    mux4<sc_uint<32> > *rtFwd_exe, *rsFwd_exe, *rsFwd_id, *rtFwd_id, *rddFwd_mem1;
 
    /* End */
+   /* Hazard */
+   sc_signal <bool> reset_haz_mem1mem2, reset_mem1mem2, reset_haz_exemem1, reset_exemem1,
+                     reset_haz_idexe, reset_idexe, reset_haz_ifid, reset_ifid;
 
    // IF
    sc_signal < sc_uint<32> > PC,       // Program Counter
@@ -124,8 +129,7 @@ SC_MODULE(mips) {
 			     PC4;      // PC + 4
    sc_signal < sc_uint<32> > inst;     // current instruction
    sc_signal <bool> enable_pc;
-
-   sc_signal <bool> enable_ifid;
+   sc_signal <bool> enable_ifid, enable_idexe, enable_exemem1;
 
    //ID
    sc_signal < sc_uint<32> > inst_id,  // current instruction ID phase
@@ -156,7 +160,6 @@ SC_MODULE(mips) {
                              regb_exe, // value of regiter rt EXE phase
                              regb_mem1; // value of regiter rt MEM phase
 
-   sc_signal <bool> reset_haz_idexe, reset_idexe, reset_haz_ifid, reset_ifid;
    // control signals
    sc_signal <bool> MemRead, MemWrite, MemtoReg;
    sc_signal <bool> RegWrite, RegDst;

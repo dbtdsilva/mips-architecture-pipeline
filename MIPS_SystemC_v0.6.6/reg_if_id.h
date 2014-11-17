@@ -40,7 +40,9 @@ SC_MODULE(reg_if_id_t) {
 	regT < sc_uint<32> > *PC;        // only for visualization purposes
 	regT < bool > *valid;            // only for visualization purposes
 
+	sc_signal < bool > flag;
 	SC_CTOR(reg_if_id_t) {
+		flag = true;
 
 		inst = new regT < sc_uint<32> > ("inst");
 		inst->din(inst_if);
@@ -53,14 +55,14 @@ SC_MODULE(reg_if_id_t) {
 		alu->din(AluOut);
 		alu->dout(AluOut_fwd_ifid);
 		alu->clk(clk);
-		alu->enable(enable);
+		alu->enable(flag);
 		alu->reset(reset);
 
 		alu_mem1 = new regT <sc_uint<32> > ("alu_mem1");
 		alu_mem1->din(AluOut_mem1);
 		alu_mem1->dout(AluOut_mem1_fwd_ifid);
 		alu_mem1->clk(clk);
-		alu_mem1->enable(enable);
+		alu_mem1->enable(flag);
 		alu_mem1->reset(reset);
 
 		PC4 = new regT < sc_uint<32> > ("PC4");

@@ -58,7 +58,9 @@ SC_MODULE(reg_id_exe_t) {
 	regT < sc_uint<32> > *PC;      // only for visualization purposes
 	regT < bool > *valid;          // only for visualization purposes
 
+	sc_signal < bool > flag;
 	SC_CTOR(reg_id_exe_t) {
+		flag = true;
 
 		rega = new regT < sc_uint<32> > ("rega");
 		rega->din(rega_id);
@@ -99,28 +101,28 @@ SC_MODULE(reg_id_exe_t) {
 		alu->din(AluOut);
 		alu->dout(AluOut_fwd_idexe);
 		alu->clk(clk);
-		alu->enable(enable);
+		alu->enable(flag);
 		alu->reset(reset);
 
 		alu_mem1 = new regT <sc_uint<32> > ("alu_mem1");
 		alu_mem1->din(AluOut_mem1);
 		alu_mem1->dout(AluOut_mem1_fwd_idexe);
 		alu_mem1->clk(clk);
-		alu_mem1->enable(enable);
+		alu_mem1->enable(flag);
 		alu_mem1->reset(reset);
 
 		alu_mem2 = new regT <sc_uint<32> > ("alu_mem2");
 		alu_mem2->din(AluOut_mem2);
 		alu_mem2->dout(AluOut_mem2_fwd_idexe);
 		alu_mem2->clk(clk);
-		alu_mem2->enable(enable);
+		alu_mem2->enable(flag);
 		alu_mem2->reset(reset);
 
 		memout = new regT <sc_uint<32> > ("memout");
 		memout->din(MemOut);
 		memout->dout(MemOut_fwd_idexe);
 		memout->clk(clk);
-		memout->enable(enable);
+		memout->enable(flag);
 		memout->reset(reset);
 
 		regb = new regT < sc_uint<32> >("regb");

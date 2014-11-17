@@ -327,7 +327,7 @@ void mips::buildArchitecture(void)
 	reg_id_exe->valid_exe(valid_exe);
 	reg_id_exe->clk(clk);
 	reg_id_exe->reset(reset_idexe);
-	reg_id_exe->enable(const1);
+	reg_id_exe->enable(enable_idexe);
 	or_reset_idexe = new orgate("or_reset_idexe");
 	or_reset_idexe->din1(reset);
 	or_reset_idexe->din2(reset_haz_idexe);
@@ -368,8 +368,13 @@ void mips::buildArchitecture(void)
 	reg_exe_mem1->valid_exe(valid_exe);
 	reg_exe_mem1->valid_mem1(valid_mem1);
 	reg_exe_mem1->clk(clk);
-	reg_exe_mem1->reset(reset);
-	reg_exe_mem1->enable(const1);
+	reg_exe_mem1->reset(reset_exemem1);
+	reg_exe_mem1->enable(enable_exemem1);
+
+	or_reset_exemem1 = new orgate("or_reset_exemem1");
+	or_reset_exemem1->din1(reset);
+	or_reset_exemem1->din2(reset_haz_exemem1);
+	or_reset_exemem1->dout(reset_exemem1);
 
 	buildMEM1();
 
@@ -389,8 +394,13 @@ void mips::buildArchitecture(void)
 	reg_mem1_mem2->valid_mem1(valid_mem1);
 	reg_mem1_mem2->valid_mem2(valid_mem2);
 	reg_mem1_mem2->clk(clk);
-	reg_mem1_mem2->reset(reset);
+	reg_mem1_mem2->reset(reset_mem1mem2);
 	reg_mem1_mem2->enable(const1);
+
+	or_reset_mem1mem2 = new orgate("or_reset_mem1mem2");
+	or_reset_mem1mem2->din1(reset);
+	or_reset_mem1mem2->din2(reset_haz_mem1mem2);
+	or_reset_mem1mem2->dout(reset_mem1mem2);
 
 	buildMEM2();
 
@@ -463,20 +473,27 @@ void mips::buildArchitecture(void)
 	hazard_unit = new hazard("hazard_unit");
 	hazard_unit->rs(rs);
 	hazard_unit->rt(rt);
+	hazard_unit->Branch(Branch);
 	hazard_unit->BranchTaken(BranchTaken);
 	hazard_unit->Jump(Jump);
 
 	hazard_unit->WriteReg_exe(WriteReg_exe);
-	hazard_unit->RegWrite_exe(RegWrite_exe);
 	hazard_unit->WriteReg_mem1(WriteReg_mem1);
-	hazard_unit->RegWrite_mem1(RegWrite_mem1);
 	hazard_unit->WriteReg_mem2(WriteReg_mem2);
+	hazard_unit->RegWrite_exe(RegWrite_exe);
+	hazard_unit->RegWrite_mem1(RegWrite_mem1);
 	hazard_unit->RegWrite_mem2(RegWrite_mem2);
+	hazard_unit->MemRead_mem1(MemRead_mem1);
+	hazard_unit->MemRead_mem2(MemRead_mem2);
 
 	hazard_unit->enable_pc(enable_pc);
 	hazard_unit->enable_ifid(enable_ifid);
 	hazard_unit->reset_ifid(reset_haz_ifid);
+	hazard_unit->enable_idexe(enable_idexe);
 	hazard_unit->reset_idexe(reset_haz_idexe);
+	hazard_unit->enable_exemem1(enable_exemem1);
+	hazard_unit->reset_exemem1(reset_haz_exemem1);
+	hazard_unit->reset_mem1mem2(reset_haz_mem1mem2);
 }
 
 mips::~mips(void)
@@ -487,7 +504,8 @@ mips::~mips(void)
 	delete rsFwd_id;
 	delete rtFwd_id;
 	delete rddFwd_mem1;
-
+	delete or_reset_exemem1;
+	delete or_reset_mem1mem2;
 	delete PCreg;
 	delete instmem;
 	delete add4;
