@@ -498,6 +498,15 @@ void mips::buildArchitecture(void)
 
 mips::~mips(void)
 {
+	delete rtActive_exe;
+	delete rsActive_id;
+	delete rtActive_id;
+	delete rtFwd_exe;
+	delete rsFwd_exe;
+	delete rsFwd_id;
+	delete rtFwd_id;
+	delete rddFwd_mem1;
+
 	delete PCreg;
 	delete instmem;
 	delete add4;
